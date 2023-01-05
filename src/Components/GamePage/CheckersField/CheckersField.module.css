@@ -55,19 +55,6 @@
 	grid-area: r;
 }
 
-/*.tl {*/
-/*	grid-area: tl;*/
-/*}*/
-/*.tr {*/
-/*	grid-area: tr;*/
-/*}*/
-/*.bl {*/
-/*	grid-area: bl;*/
-/*}*/
-/*.br {*/
-/*	grid-area: br;*/
-/*}*/
-
 .cellsField {
 	grid-area: f;
 	border: black solid 1px;
@@ -111,6 +98,7 @@
 }
 
 .checkerSelected {
+	cursor: pointer;
 	border: solid 2px orange;
 	border-radius: 50%;
 }

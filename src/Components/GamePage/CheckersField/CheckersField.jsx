@@ -13,7 +13,7 @@ const Checker = ({type, color, selected, onSelectChecker, position, playerColor}
 
 	return (
 		<img
-			className={styles.checker + (selected ? (" " + styles.checkerSelected) : "") + (playerColor === color ? (" " + styles.checkerPlayer) : "")}
+			className={styles.checker + (selected ? (" " + styles.checkerSelected) : (playerColor === color ? (" " + styles.checkerPlayer) : ""))}
 			src={
 				color === CHECKER_COLOR_BLACK
 					? (type === CHECKER_TYPE_CHECKER ? blackChecker : blackKing)

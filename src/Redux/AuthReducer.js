@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {fetchLogIn, fetchLogOut, fetchWhoAmI} from "../API/AuthAPI";
 import {getTokenFromCookie, putTokenToCookie, removeTokenFromCookie} from "../Cookie/AuthWithCookie";
-import {fetchLogin} from "../API/TestAPI";
+// import {fetchLogin} from "../API/TestAPI";
 
 const initialState = {
 	token: getTokenFromCookie(),

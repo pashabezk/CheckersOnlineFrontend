@@ -3,6 +3,7 @@ import {Button, Checkbox, Form, Input} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {selectAuthError, selectIsAuthing, setAuthError, tryLogInAsync} from "../../Redux/AuthReducer";
 import withAuthRedirect from "../HOC/withAuthRedirect";
+import styles from "./Login.module.css"
 
 const Login = () => {
 
@@ -22,19 +23,8 @@ const Login = () => {
 		dispatch(setAuthError(null))
 	}
 
-
 	return (
-		<div style={{
-			display: "flex",
-			height: "100%",
-			minHeight: "100%",
-			flexGrow: 1,
-			width: "100%",
-			margin: "auto",
-			// verticalAlign: "center",
-			// alignSelf: "center"
-			// border: "solid indigo 3px"
-		}}>
+		<div className={styles.loginContainer}>
 			<Form
 				labelCol={{
 					span: 6
@@ -46,14 +36,7 @@ const Login = () => {
 				onFinishFailed={onFinishFailed}
 				onFieldsChange={onFieldsChange}
 				requiredMark={false}
-				style={{
-					verticalAlign: "center",
-					marginBlock: "auto",
-					width: "100%",
-					maxWidth: "500px",
-					marginInline: "auto",
-					// border: "solid violet 3px"
-				}}>
+				className={styles.loginForm}>
 				<Form.Item
 					label="Логин"
 					name="login"
@@ -73,8 +56,7 @@ const Login = () => {
 							required: true,
 							message: 'Поле пароль обязательно',
 						},
-					]}
-				>
+					]}>
 					<Input.Password/>
 				</Form.Item>
 				<Form.Item
@@ -83,8 +65,7 @@ const Login = () => {
 					wrapperCol={{
 						span: 0,
 						offset: 6
-					}}
-				>
+					}}>
 					<Checkbox>запомнить меня</Checkbox>
 				</Form.Item>
 				<Form.Item

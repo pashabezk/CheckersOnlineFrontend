@@ -1,6 +1,6 @@
 import './App.css';
 import React from "react";
-import {Layout} from "antd";
+import {Layout, Spin} from "antd";
 import {Content, Footer} from "antd/es/layout/layout";
 import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import AppFooter from "./Components/Footer/Footer";
@@ -28,7 +28,7 @@ function App() {
 			<Layout className="main-wrapper">
 				<AppHeader/>
 				<Content>
-					<React.Suspense fallback={<div>loading</div>}>
+					<React.Suspense fallback={<Spin tip="Загрузка" size="large"/>}>
 						<Routes>
 							<Route path="/" element={<Navigate to="/profile"/>}/>
 							<Route path="/profile" element={<UserPage/>}/>
@@ -49,5 +49,4 @@ function App() {
 	);
 }
 
-// export default withCookieSession(App);
 export default App;
