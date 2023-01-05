@@ -10,6 +10,7 @@ const initialState = {
 	// rivalId: null,
 	playerColor: CHECKER_COLOR_WHITE, // цвет игрока (белый или черный)
 	selectedCheckerPosition: null,
+	availableFields: [], // поля доступные для хода, описываются в шашечной нотации a1, g8
 	gameField: [
 		{
 			"color": "WHITE",
@@ -26,7 +27,19 @@ const initialState = {
 		}, {
 			"color": "WHITE",
 			"type": "CHECKER",
+			"position": "c3"
+		}, {
+			"color": "WHITE",
+			"type": "CHECKER",
 			"position": "g1"
+		}, {
+			"color": "WHITE",
+			"type": "CHECKER",
+			"position": "f2"
+		}, {
+			"color": "WHITE",
+			"type": "CHECKER",
+			"position": "e3"
 		}, {
 			"color": "BLACK",
 			"type": "QUEEN",
@@ -39,6 +52,26 @@ const initialState = {
 			"color": "BLACK",
 			"type": "QUEEN",
 			"position": "f4"
+		}, {
+			"color": "BLACK",
+			"type": "CHECKER",
+			"position": "d4"
+		}, {
+			"color": "BLACK",
+			"type": "CHECKER",
+			"position": "c7"
+		}, {
+			"color": "BLACK",
+			"type": "CHECKER",
+			"position": "e7"
+		}, {
+			"color": "BLACK",
+			"type": "CHECKER",
+			"position": "b6"
+		}, {
+			"color": "BLACK",
+			"type": "CHECKER",
+			"position": "c5"
 		}
 	],
 };
@@ -47,12 +80,14 @@ export const gameSlice = createSlice({
 	name: "game",
 	initialState,
 	reducers: {
+		// установка позиции выбранной шашки
 		setSelectedCheckerPosition: (state, action) => {
 			state.selectedCheckerPosition = action.payload;
+		},
+		// установка полей, доступных для хода
+		setAvailableFields: (state, action) => {
+			state.availableFields = action.payload;
 		}
-		// incrementByAmount: (state, action) => {
-		// 	state.value += action.payload;
-		// }
 	},
 	extraReducers: (builder) => {
 		// builder
@@ -76,11 +111,12 @@ export const gameSlice = createSlice({
 });
 
 // actions
-export const {setSelectedCheckerPosition} = gameSlice.actions;
+export const {setSelectedCheckerPosition, setAvailableFields} = gameSlice.actions;
 
 // selectors
 export const selectGameField = (state) => state.game.gameField;
 export const selectPlayerColor = (state) => state.game.playerColor;
 export const selectSelectedCheckerPosition = (state) => state.game.selectedCheckerPosition;
+export const selectAvailableFields = (state) => state.game.availableFields;
 
 export default gameSlice.reducer;

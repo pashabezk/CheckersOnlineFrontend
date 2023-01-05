@@ -5,6 +5,7 @@ import whiteKing from "../../../Assets/Img/Chekers/WhiteKing.svg";
 import blackChecker from "../../../Assets/Img/Chekers/Black.svg";
 import whiteChecker from "../../../Assets/Img/Chekers/White.svg";
 import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER} from "../../../Redux/GameReducer";
+import {letters} from "../GamePage";
 
 const Checker = ({type, color, selected, onSelectChecker, position, playerColor}) => {
 	const checkerOnClick = () => {
@@ -25,9 +26,9 @@ const Checker = ({type, color, selected, onSelectChecker, position, playerColor}
 	);
 }
 
-const Cell = ({isBlack, checker, selected, onSelectChecker, position, playerColor}) => {
+const Cell = ({isBlack, checker, selected, onSelectChecker, position, playerColor, isAvailable}) => {
 	return (
-		<div className={(isBlack ? styles.blackCell : styles.whiteCell)}>
+		<div className={(isBlack ? styles.blackCell : styles.whiteCell) + (isAvailable ? (" " + styles.availableCell) : "")}>
 			{
 				checker
 					? <Checker type={checker.type} color={checker.color} selected={selected} onSelectChecker={onSelectChecker} position={position} playerColor={playerColor}/>
@@ -37,14 +38,13 @@ const Cell = ({isBlack, checker, selected, onSelectChecker, position, playerColo
 	);
 }
 
-const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, playerColor}) => {
-	const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, playerColor, availableFields}) => {
 	let isBlack = rowNumber % 2 !== 1; // вычисление цвета первой клетки ряда
 	const cells = letters.map(letter => {
 		isBlack = !isBlack;
 		const position = letter + rowNumber; // позиция в шашечной нотации, например: a1 или g5
-		let selected = false;
-		const checker = gameField.find(elem => {
+		let selected = false; // является ли шашка на позиции выбранной
+		const checker = gameField.find(elem => { // поиск: есть ли шашка на этой позиции
 			if (elem.position === position) {
 				if (position === selectedCheckerPosition)
 					selected = true;
@@ -52,7 +52,21 @@ const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, pl
 			} else return false;
 		});
 
-		return <Cell key={position} isBlack={isBlack} checker={checker} selected={selected} onSelectChecker={onSelectChecker} position={position} playerColor={playerColor}/>
+		// является ли отрисовываемая клетка доступной к ходу
+		const isAvailable = availableFields.find(elem => {
+			return elem === position;
+		});
+
+		return <Cell
+			key={position}
+			isBlack={isBlack}
+			checker={checker}
+			selected={selected}
+			onSelectChecker={onSelectChecker}
+			position={position}
+			playerColor={playerColor}
+			isAvailable={isAvailable}
+		/>
 	});
 
 	return (
@@ -62,21 +76,29 @@ const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, pl
 	);
 }
 
-const CheckersField = ({gameField, playerColor, selectedCheckerPosition, onSelectChecker}) => {
+const CheckersField = ({gameField, playerColor, selectedCheckerPosition, onSelectChecker, availableFields}) => {
 
-	let numbers = [8, 7, 6, 5, 4, 3, 2, 1];
-	const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+	let numbers = [8, 7, 6, 5, 4, 3, 2, 1]; // ряд чисел для составления доски
 
-	if (playerColor === CHECKER_COLOR_BLACK)
+	if (playerColor === CHECKER_COLOR_BLACK) // если игрок играет за черные шашки, то поле надо перевернуть
 		numbers = numbers.reverse()
 
-	const rows = numbers.map(number => <Row key={number} rowNumber={number} gameField={gameField} selectedCheckerPosition={selectedCheckerPosition} onSelectChecker={onSelectChecker} playerColor={playerColor}/>)
+	const rows = numbers.map(number => // формирование строк в которые будут помещены клетки с игрой
+		<Row key={number}
+			 rowNumber={number}
+			 gameField={gameField}
+			 selectedCheckerPosition={selectedCheckerPosition}
+			 onSelectChecker={onSelectChecker}
+			 playerColor={playerColor}
+			 availableFields={availableFields}
+		/>
+	);
 
-	const numbersSide = numbers.map(number => {
+	const numbersSide = numbers.map(number => { // формирование блоков для нумерации доски
 		return <div key={number + " " + number}>{number}</div>
 	});
 
-	const lettersSide = letters.map(letter => {
+	const lettersSide = letters.map(letter => { // формирование блоков для нумерации доски с помощью букв
 		return <div key={letter + letter}>{letter}</div>
 	});
 

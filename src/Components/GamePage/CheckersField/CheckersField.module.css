@@ -78,6 +78,11 @@
 	background-color: white;
 }
 
+.availableCell {
+	cursor: pointer;
+	background-color: green;
+}
+
 /*checker*/
 
 .checker {
