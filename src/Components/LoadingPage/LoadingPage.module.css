@@ -1,0 +1,10 @@
+.loadingContainer {
+	display: flex;
+	justify-content: center;
+	flex-grow: 1;
+}
+
+.loader {
+	flex-grow: 1;
+	margin: auto;
+}

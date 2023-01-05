@@ -1,0 +1,116 @@
+.checkersField {
+	/*width: 500px;*/
+	/*height: 500px;*/
+	display: grid;
+	border: slategrey solid 2px;
+	max-height: 80vh;
+	aspect-ratio: 1/1;
+	grid-template-areas:
+	"tl t t t t t t t t tr"
+	"l f f f f f f f f r"
+	"l f f f f f f f f r"
+	"l f f f f f f f f r"
+	"l f f f f f f f f r"
+	"l f f f f f f f f r"
+	"l f f f f f f f f r"
+	"l f f f f f f f f r"
+	"l f f f f f f f f r"
+	"bl b b b b b b b b br";
+}
+
+.letters {
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+}
+
+.letters div {
+	justify-self: center;
+	margin: auto;
+}
+
+.lettersTop {
+	grid-area: t;
+}
+
+.lettersBottom {
+	grid-area: b;
+}
+
+.numbers {
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+.numbers div {
+	align-self: center;
+	margin: auto;
+	border: rgba(255, 255, 255, 0) 5px solid;
+}
+
+.numbersLeft {
+	grid-area: l;
+}
+
+.numbersRight {
+	grid-area: r;
+}
+
+/*.tl {*/
+/*	grid-area: tl;*/
+/*}*/
+/*.tr {*/
+/*	grid-area: tr;*/
+/*}*/
+/*.bl {*/
+/*	grid-area: bl;*/
+/*}*/
+/*.br {*/
+/*	grid-area: br;*/
+/*}*/
+
+.cellsField {
+	grid-area: f;
+	border: black solid 1px;
+	display: grid;
+	grid-template-rows: repeat(8, 1fr);
+	grid-template-columns: 1fr;
+}
+
+.checkersFieldRow {
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+}
+
+/*cells*/
+
+.blackCell {
+	background-color: slategrey;
+}
+
+.whiteCell {
+	background-color: white;
+}
+
+/*checker*/
+
+.checker {
+	position: relative;
+	left: 50%;
+	top: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	width: 75%;
+	height: auto;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.checkerPlayer:hover {
+	cursor: pointer;
+	border: solid 2px violet;
+	border-radius: 50%;
+}
+
+.checkerSelected {
+	border: solid 2px orange;
+	border-radius: 50%;
+}
