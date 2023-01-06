@@ -43,25 +43,28 @@ const GamePage = () => {
 
 		// функция поиска ходов для шашек
 		// searchRight - булево значение, которое определяет направление поиска - право или лево
+		// searchBack - булево значение, которое определяет направление поиска - вперед или назад (по умолчанию вперед)
 		// возвращаемые значения: [hasToEat, position]
 		// hasToEat - показывает обязана ли шашка есть в этом направлении
 		// position - позиция (в шашечной нотации) с координатой хода
-		const findAvailableCellsForChecker = (searchRight) => {
+		const findAvailableCellsForChecker = (searchRight, searchBack = false) => {
 			const m = searchRight ? 1 : -1; // multiplier - множитель, который отвечает за право или лево
 
 			// поиск соседа на клетке выше
-			const neighbourPosition = letters[letterIndex + (1 * m)] + numbers[numberIndex - 1];
+			const neighbourPosition = letters[letterIndex + (1 * m)] + numbers[searchBack ? (numberIndex + 1) : (numberIndex - 1)];
 			const neighbour = findChecker(gameField, neighbourPosition); // получение объекта шашки на позиции
 			if (neighbour) {
 				// если сосед есть, то проверить - можно ли его съесть
 				if (neighbour.color !== playerColor) { // своего есть нельзя
 					// проверка свободно ли место за соседней шашкой (можно ли съесть врага)
-					if (!findChecker(gameField, letters[letterIndex + (2 * m)] + numbers[numberIndex - 2])) {
-						return [true, letters[letterIndex + (2 * m)] + numbers[numberIndex - 2]];
+					const afterNeighbourPos = letters[letterIndex + (2 * m)] + numbers[searchBack ? (numberIndex + 2) : (numberIndex - 2)];
+					if (!findChecker(gameField, afterNeighbourPos)) {
+						return [true, afterNeighbourPos];
 					}
 				}
 			} else { // если соседа нет, то можно ходить
-				return [false, letters[letterIndex + (1 * m)] + numbers[numberIndex - 1]];
+				if (!searchBack) // простой ход можно совершать только вперед
+					return [false, letters[letterIndex + (1 * m)] + numbers[numberIndex - 1]];
 			}
 			return [false, null];
 		};
@@ -125,39 +128,45 @@ const GamePage = () => {
 
 		// добавление доступных для хода клеток
 		if (checker.type === CHECKER_TYPE_CHECKER) { // если выбрана шашка
-			let hasToEat1, hasToEat2, pos1, pos2;
+			let hasToEat = [];
+			let positions = [];
 			if (letterIndex + 1 <= letters.length) { // проверка существует ли колонка правее
-				[hasToEat1, pos1] = findAvailableCellsForChecker(true);
+				[hasToEat[0], positions[0]] = findAvailableCellsForChecker(true);
+				[hasToEat[1], positions[1]] = findAvailableCellsForChecker(true, true);
 			}
 			if (letterIndex - 1 >= 0) { // проверка существует ли колонка левее
-				[hasToEat2, pos2] = findAvailableCellsForChecker(false);
+				[hasToEat[2], positions[2]] = findAvailableCellsForChecker(false);
+				[hasToEat[3], positions[3]] = findAvailableCellsForChecker(false, true);
 			}
-			if (!(hasToEat1 || hasToEat2)) { // если у шашки нет обязанности есть, то добавляются возможные для хода клетки
-				if (pos1) availableFields.push(pos1);
-				if (pos2) availableFields.push(pos2);
-			} else { // если шашка обязанна есть, то добавляются ходы, где она обязана есть
-				if (hasToEat1) availableFields.push(pos1);
-				if (hasToEat2) availableFields.push(pos2);
+			if (!(hasToEat[0] || hasToEat[1] || hasToEat[2] || hasToEat[3])) { // если у шашки нет обязанности есть, то добавляются возможные для хода клетки
+				if (positions[0]) availableFields.push(positions[0]);
+				if (positions[2]) availableFields.push(positions[2]);
+			} else { // иначе добавляются только те направления, в которых шашка обязана есть
+				for (let i = 0; i < hasToEat.length; i++) {
+					if (hasToEat[i])
+						availableFields.push(positions[i]);
+				}
 			}
 		} else { // если выбрана дамка
 			// собираются данные по всем направлениям
 			let hasToEat = [];
 			let cells = [];
-			[hasToEat[1], cells[1]] = findAvailableCellsForQueen(true, true);
-			[hasToEat[2], cells[2]] = findAvailableCellsForQueen(true, false);
-			[hasToEat[3], cells[3]] = findAvailableCellsForQueen(false, true);
-			[hasToEat[4], cells[4]] = findAvailableCellsForQueen(false, false);
+			[hasToEat[0], cells[0]] = findAvailableCellsForQueen(true, true);
+			[hasToEat[1], cells[1]] = findAvailableCellsForQueen(true, false);
+			[hasToEat[2], cells[2]] = findAvailableCellsForQueen(false, true);
+			[hasToEat[3], cells[3]] = findAvailableCellsForQueen(false, false);
 
-			if (!(hasToEat[1] || hasToEat[2] || hasToEat[3] || hasToEat[4])) { // если у дамки нет обязанности есть шашку
+			if (!(hasToEat[0] || hasToEat[1] || hasToEat[2] || hasToEat[3])) { // если у дамки нет обязанности есть шашку
 				cells.forEach(arr => availableFields.push(...arr)); // тогда добавляем все возможные ходы в массив
 			} else {
 				// иначе добавляются только те направления, в которых дамка обязана есть
 				for (let i = 0; i < hasToEat.length; i++) {
 					if (hasToEat[i])
-						availableFields.push(...cells[i])
+						availableFields.push(...cells[i]);
 				}
 			}
 		}
+		console.log(availableFields)
 
 		dispatch(setSelectedCheckerPosition(position)); // добавление выбранной шашки в редакс
 		dispatch(setAvailableFields(availableFields)); // добавление возможных для шашки ходов в редакс
