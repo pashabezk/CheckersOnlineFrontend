@@ -6,74 +6,124 @@ export const CHECKER_COLOR_BLACK = "BLACK";
 export const CHECKER_TYPE_CHECKER = "CHECKER";
 export const CHECKER_TYPE_QUEEN = "QUEEN";
 
+const gameFieldRandom = [
+	{
+		"color": "WHITE",
+		"type": "CHECKER",
+		"position": "a1"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "c1"
+	}, {
+		"color": "WHITE",
+		"type": "CHECKER",
+		"position": "e1"
+	}, {
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "c3"
+	}, {
+		"color": "WHITE",
+		"type": "CHECKER",
+		"position": "g1"
+	}, {
+		"color": "WHITE",
+		"type": "CHECKER",
+		"position": "f2"
+	}, {
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "e3"
+	}, {
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "g7"
+	}, {
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "d6"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "b8"
+	}, {
+		"color": "BLACK",
+		"type": "CHECKER",
+		"position": "d8"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "f4"
+	}, {
+		"color": "BLACK",
+		"type": "CHECKER",
+		"position": "d4"
+	}, {
+		"color": "BLACK",
+		"type": "CHECKER",
+		"position": "c7"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "e7"
+	}, {
+		"color": "WHITE",
+		"type": "CHECKER",
+		"position": "b6"
+	}, {
+		"color": "BLACK",
+		"type": "CHECKER",
+		"position": "c5"
+	}, {
+		"color": "BLACK",
+		"type": "CHECKER",
+		"position": "d2"
+	}
+];
+
+const gameFieldTestQueen = [
+	{
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "d2"
+	}, {
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "b2"
+	}, {
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "b6"
+	}, {
+		"color": "WHITE",
+		"type": "QUEEN",
+		"position": "d8"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "d4"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "f6"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "h6"
+	}, {
+		"color": "BLACK",
+		"type": "QUEEN",
+		"position": "e3"
+	}
+];
+
 const initialState = {
 	// rivalId: null,
-	playerColor: CHECKER_COLOR_WHITE, // цвет игрока (белый или черный)
+	playerColor: CHECKER_COLOR_BLACK, // цвет игрока (белый или черный)
 	selectedCheckerPosition: null,
 	availableFields: [], // поля доступные для хода, описываются в шашечной нотации a1, g8
-	gameField: [
-		{
-			"color": "WHITE",
-			"type": "CHECKER",
-			"position": "a1"
-		}, {
-			"color": "WHITE",
-			"type": "QUEEN",
-			"position": "c1"
-		}, {
-			"color": "WHITE",
-			"type": "CHECKER",
-			"position": "e1"
-		}, {
-			"color": "WHITE",
-			"type": "CHECKER",
-			"position": "c3"
-		}, {
-			"color": "WHITE",
-			"type": "CHECKER",
-			"position": "g1"
-		}, {
-			"color": "WHITE",
-			"type": "CHECKER",
-			"position": "f2"
-		}, {
-			"color": "WHITE",
-			"type": "CHECKER",
-			"position": "e3"
-		}, {
-			"color": "BLACK",
-			"type": "QUEEN",
-			"position": "b8"
-		}, {
-			"color": "BLACK",
-			"type": "CHECKER",
-			"position": "d8"
-		}, {
-			"color": "BLACK",
-			"type": "QUEEN",
-			"position": "f4"
-		}, {
-			"color": "BLACK",
-			"type": "CHECKER",
-			"position": "d4"
-		}, {
-			"color": "BLACK",
-			"type": "CHECKER",
-			"position": "c7"
-		}, {
-			"color": "BLACK",
-			"type": "CHECKER",
-			"position": "e7"
-		}, {
-			"color": "BLACK",
-			"type": "CHECKER",
-			"position": "b6"
-		}, {
-			"color": "BLACK",
-			"type": "CHECKER",
-			"position": "c5"
-		}
-	],
+	gameField: gameFieldRandom,
 };
 
 export const gameSlice = createSlice({
