@@ -44,6 +44,10 @@ const gameFieldRandom = [
 		"type": "QUEEN",
 		"position": "d6"
 	}, {
+		"color": "WHITE",
+		"type": "CHECKER",
+		"position": "f8"
+	}, {
 		"color": "BLACK",
 		"type": "QUEEN",
 		"position": "b8"
