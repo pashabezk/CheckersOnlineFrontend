@@ -8,8 +8,8 @@ import MessagesPage from "./Components/MessagesPage/MessagesPage";
 import AppHeader from "./Components/Header/Header";
 
 const Login = React.lazy(() => import ("./Components/Login/Login"));
-const UserPage = React.lazy(() => import ("./Components/UserPage/UserPage"));
 const GamePage = React.lazy(() => import ("./Components/GamePage/GamePage"));
+const ProfilePageContainer = React.lazy(() => import ("./Components/ProfilePage/ProfilePageContainer"));
 
 function App() {
 	return (
@@ -31,7 +31,7 @@ function App() {
 					<React.Suspense fallback={<Spin tip="Загрузка" size="large"/>}>
 						<Routes>
 							<Route path="/" element={<Navigate to="/profile"/>}/>
-							<Route path="/profile" element={<UserPage/>}/>
+							<Route path="/profile" element={<ProfilePageContainer/>}/>
 							<Route path="/game" element={<GamePage/>}/>
 							<Route path="/messages" element={<MessagesPage/>}/>
 							<Route path="/login" element={<Login/>}/>

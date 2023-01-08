@@ -15,7 +15,7 @@
 
 .content {
 	flex-grow: 1;
-	/*border: green solid 3px;*/
+	margin-inline: 15px;
 }
 
 @media (max-width: 650px) {

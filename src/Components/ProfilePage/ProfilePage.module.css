@@ -1,0 +1,60 @@
+.userPhotoAndLoginBlock {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.nameBlock h1 {
+	margin-block: 10px;
+	font-size: larger;
+}
+
+@media (max-width: 480px) {
+	.userPhotoAndLoginBlock {
+		flex-direction: column;
+		gap: 15px;
+	}
+}
+
+/* games block */
+
+.gameCardBlock {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.gameCard {
+	cursor: pointer;
+	max-width: 500px;
+}
+
+.gameCard.win {
+	background-color: rgba(175, 255, 175, 0.25);
+}
+
+.gameCard.lose {
+	background-color: rgba(255, 161, 194, 0.25);
+}
+
+.gameCard.waiting {
+	background-color: rgba(253, 240, 149, 0.25);
+}
+
+.gameCard.ready {
+	background-color: rgba(31, 72, 252, 0.25);
+}
+
+.gameCard:hover {
+	background-color: rgba(112, 128, 144, 0.37);
+}
+
+.user {
+	color: #7604e0;
+}
+
+.gameId {
+	color: slategrey;
+}

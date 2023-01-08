@@ -1,12 +1,13 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import authReducer from "./AuthReducer"
 import gameReducer from "./GameReducer"
+import profileReducer from "./ProfileReducer"
 
 const store = configureStore({
 	reducer: combineReducers({
 		auth: authReducer,
 		game: gameReducer,
-		// alfaBank: alfaBankReducer
+		profile: profileReducer
 	})
 });
 
