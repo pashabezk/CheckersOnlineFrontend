@@ -1,3 +1,14 @@
+:root {
+  --text-unaccented: slategray;
+  --user-accent-color: #533eb4;
+
+  --game-card-win: #cfefdf;
+  --game-card-lose: #fcdbd9;
+  --game-card-waiting: #fff3cf;
+  --game-card-ready: #d2eafb;
+  --game-card-hover: #b9b9b9;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

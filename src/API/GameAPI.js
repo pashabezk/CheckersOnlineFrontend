@@ -41,7 +41,27 @@ const games = [
 export function fetchGetGamesList() {
 	return new Promise((resolve) =>
 		setTimeout(() => {
-			resolve({data: games})
+			resolve({data: games});
+		}, 1000)
+	);
+}
+
+export function fetchCreateGame() {
+	return new Promise((resolve) =>
+		setTimeout(() => {
+			resolve({data: 123}); // id созданной игры
+		}, 1000)
+	);
+}
+
+export function fetchConnectToGame(id) {
+	return new Promise((resolve) =>
+		setTimeout(() => {
+			const result = Math.random(); // рандом для вывода ошибки
+			if (result < 0.5)
+				resolve({data: {error: null, connectedGameId: id}});
+			else
+				resolve({data: {error: "Невозможно подключиться к игре с таким идентификатором"}});
 		}, 1000)
 	);
 }

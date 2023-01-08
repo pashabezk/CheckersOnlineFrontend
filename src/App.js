@@ -6,9 +6,10 @@ import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import AppFooter from "./Components/Footer/Footer";
 import MessagesPage from "./Components/MessagesPage/MessagesPage";
 import AppHeader from "./Components/Header/Header";
+import GamePage from "./Components/GamePage/GamePage";
 
 const Login = React.lazy(() => import ("./Components/Login/Login"));
-const GamePage = React.lazy(() => import ("./Components/GamePage/GamePage"));
+// const GamePage = React.lazy(() => import ("./Components/GamePage/GamePage"));
 const ProfilePageContainer = React.lazy(() => import ("./Components/ProfilePage/ProfilePageContainer"));
 
 function App() {

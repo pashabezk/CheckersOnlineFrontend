@@ -6,9 +6,12 @@
 	margin-bottom: 20px;
 }
 
-.nameBlock h1 {
-	margin-block: 10px;
-	font-size: larger;
+.nameBlock h2 {
+	margin: 0;
+}
+
+.copy {
+	cursor: pointer;
 }
 
 @media (max-width: 480px) {
@@ -26,35 +29,47 @@
 	gap: 5px;
 }
 
+.gamesBlockHeader {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 5px;
+	margin: 15px 0 15px;
+}
+
+.gamesBlockHeader h2 {
+	margin: 0 10px 5px 0;
+}
+
 .gameCard {
 	cursor: pointer;
 	max-width: 500px;
 }
 
 .gameCard.win {
-	background-color: rgba(175, 255, 175, 0.25);
+	background-color: var(--game-card-win);
 }
 
 .gameCard.lose {
-	background-color: rgba(255, 161, 194, 0.25);
+	background-color: var(--game-card-lose);
 }
 
 .gameCard.waiting {
-	background-color: rgba(253, 240, 149, 0.25);
+	background-color: var(--game-card-waiting);
 }
 
 .gameCard.ready {
-	background-color: rgba(31, 72, 252, 0.25);
+	background-color: var(--game-card-ready);
 }
 
 .gameCard:hover {
-	background-color: rgba(112, 128, 144, 0.37);
+	background-color: var(--game-card-hover);
 }
 
 .user {
-	color: #7604e0;
+	color: var(--user-accent-color);
 }
 
 .gameId {
-	color: slategrey;
+	color: var(--text-unaccented);
 }
