@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/CheckersOnlineFrontend/static/css/main.01cfbaba.css",
+    "main.js": "/CheckersOnlineFrontend/static/js/main.2252905f.js",
+    "static/css/461.cfc8714f.chunk.css": "/CheckersOnlineFrontend/static/css/461.cfc8714f.chunk.css",
+    "static/js/461.58cfc095.chunk.js": "/CheckersOnlineFrontend/static/js/461.58cfc095.chunk.js",
+    "static/css/515.29163754.chunk.css": "/CheckersOnlineFrontend/static/css/515.29163754.chunk.css",
+    "static/js/515.c32c1298.chunk.js": "/CheckersOnlineFrontend/static/js/515.c32c1298.chunk.js",
+    "static/js/787.86532927.chunk.js": "/CheckersOnlineFrontend/static/js/787.86532927.chunk.js",
+    "static/js/829.59bafa08.chunk.js": "/CheckersOnlineFrontend/static/js/829.59bafa08.chunk.js",
+    "static/js/650.51c3c203.chunk.js": "/CheckersOnlineFrontend/static/js/650.51c3c203.chunk.js",
+    "static/media/WhiteKing.svg": "/CheckersOnlineFrontend/static/media/WhiteKing.af9f19842752bbf9c9ca27e16c5a0cd6.svg",
+    "static/media/BlackKing.svg": "/CheckersOnlineFrontend/static/media/BlackKing.c448a147d1a042eac504ea7693da02c9.svg",
+    "static/media/logo.svg": "/CheckersOnlineFrontend/static/media/logo.717d42befac1d457442147b419af8e57.svg",
+    "static/media/White.svg": "/CheckersOnlineFrontend/static/media/White.d2bd0ca67cc73fa4c2087d6f6db275f3.svg",
+    "static/media/Black.svg": "/CheckersOnlineFrontend/static/media/Black.9358b6f17dcb2998c36933adb167c13c.svg",
+    "index.html": "/CheckersOnlineFrontend/index.html",
+    "main.01cfbaba.css.map": "/CheckersOnlineFrontend/static/css/main.01cfbaba.css.map",
+    "main.2252905f.js.map": "/CheckersOnlineFrontend/static/js/main.2252905f.js.map",
+    "461.cfc8714f.chunk.css.map": "/CheckersOnlineFrontend/static/css/461.cfc8714f.chunk.css.map",
+    "461.58cfc095.chunk.js.map": "/CheckersOnlineFrontend/static/js/461.58cfc095.chunk.js.map",
+    "515.29163754.chunk.css.map": "/CheckersOnlineFrontend/static/css/515.29163754.chunk.css.map",
+    "515.c32c1298.chunk.js.map": "/CheckersOnlineFrontend/static/js/515.c32c1298.chunk.js.map",
+    "787.86532927.chunk.js.map": "/CheckersOnlineFrontend/static/js/787.86532927.chunk.js.map",
+    "829.59bafa08.chunk.js.map": "/CheckersOnlineFrontend/static/js/829.59bafa08.chunk.js.map",
+    "650.51c3c203.chunk.js.map": "/CheckersOnlineFrontend/static/js/650.51c3c203.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.01cfbaba.css",
+    "static/js/main.2252905f.js"
+  ]
+}
