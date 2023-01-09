@@ -32,7 +32,9 @@ const PageNotFound = ({title = "404. Такой страницы нет", messag
 		return <TemplatePageWithMenu>{body}</TemplatePageWithMenu>;
 
 	// иначе отображается только тело компонента
-	return <div>{body}</div>;
+	return <div style={{margin: "15px"}}>
+		{body}
+	</div>;
 }
 
 export default PageNotFound;

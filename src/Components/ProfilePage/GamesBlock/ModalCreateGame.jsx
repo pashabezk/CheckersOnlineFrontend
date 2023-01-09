@@ -28,7 +28,7 @@ const ModalCreateGame = ({messageApi,  createdGameId, onCreateNewGameModalClose,
 			open={isCreateGameModalOpen}
 			closable={false}
 			footer={[
-				<Button type="primary" onClick={onCreateNewGameModalClose}>OK</Button>
+				<Button type="primary" onClick={onCreateNewGameModalClose} key="okButton">OK</Button>
 			]}
 		>
 			<div>

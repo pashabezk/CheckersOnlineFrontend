@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import withAuthRedirect from "../HOC/withAuthRedirect";
 import ProfilePage from "./ProfilePage";
 import {useDispatch, useSelector} from "react-redux";
@@ -34,9 +34,11 @@ const ProfilePageContainer = () => {
 	const connectGameError = useSelector(selectConnectGameError);
 	const dispatch = useDispatch();
 
-	if (games === null) {
-		dispatch(tryGetGamesListAsync());
-	}
+	useEffect(() => {
+		if (games === null) {
+			dispatch(tryGetGamesListAsync());
+		}
+	});
 
 	// нажатие по кнопке "Создать" для создания новой игры
 	const onCreateNewGameButtonClick = () => {
@@ -54,6 +56,7 @@ const ProfilePageContainer = () => {
 		dispatch(setIsConnectGameModalOpen(open));
 	};
 
+	// нажатие Ок в модульном окне подключения к игре
 	const onConnectToGameModalFormSubmit = (gameId) => {
 		dispatch(tryConnectToGameAsync(gameId));
 	}

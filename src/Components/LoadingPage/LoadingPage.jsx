@@ -12,9 +12,11 @@ const LoadingPage = () => {
 	const dispatch = useDispatch();
 
 	// если токен есть (получен из куки), а идентификатора пользователя нет, значит надо подгрузить информацию о пользователе
-	if (token && !userId) {
-		dispatch(getInfoFromTokenAsync(token));
-	}
+	React.useEffect(() => {
+		if (token && !userId) {
+			dispatch(getInfoFromTokenAsync(token));
+		}
+	})
 
 	return (
 		<div className={styles.loadingContainer}>

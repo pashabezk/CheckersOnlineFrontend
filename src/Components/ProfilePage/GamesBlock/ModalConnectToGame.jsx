@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button, Form, InputNumber, Modal, Typography} from "antd";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const {Text} = Typography;
 
@@ -8,12 +8,14 @@ const {Text} = Typography;
 const ModalConnectToGame = ({isConnectGameModalOpen, isConnectGameLoading, connectedGameId, connectGameError, setConnectToGameModalOpened, onConnectToGameModalFormSubmit}) => {
 
 	const [formConnectToGame] = Form.useForm(); // для работы с формой в модульном окне подключения к игре
+	const navigate = useNavigate(); // хук для перехода на другие страницы
 
-	if (connectedGameId) { // если появился идентификатор подключения к игре, значит удалось подсоединиться к игре, значит нужно перейти к игре
-		setConnectToGameModalOpened(false); // закрытие модульного окна
-		return <Navigate to={"/game"}/>; // переход на страницу игры
-		// TODO изменить путь к игре
-	}
+	useEffect(() => {
+		if (connectedGameId) { // если появился идентификатор подключения к игре, значит удалось подсоединиться к игре, значит нужно перейти к игре
+			setConnectToGameModalOpened(false); // закрытие модульного окна
+			navigate("/game/" + connectedGameId); // переход на страницу игры
+		}
+	}, [connectedGameId]);
 
 	// функция обработчик нажатия кнопки "Отмена" в модульном окне подключения к игре
 	const onConnectGameModalCancelButtonClick = () => {
