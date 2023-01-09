@@ -1,8 +1,8 @@
 {
-  "name": "ant-design-learning",
+  "name": "checkers-online-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://localhost",
+  "homepage": "https://pashabezk.github.io/CheckersOnlineFrontend",
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@reduxjs/toolkit": "^1.9.1",

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Header.module.css"
-import logo from "../../Assets/logo.svg"
+import logo from "../../Assets/Img/Chekers/White.svg"
 import {Button} from "antd";
 import {LoginOutlined, LogoutOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
@@ -27,7 +27,7 @@ const AppHeader = () => {
 			<div className={"center1000px " + styles.centeredMainHeader}>
 				<div className={styles.logoContainer}>
 					<img src={logo} alt="logo"/>
-					<h1>SiteName</h1>
+					<h1>Шашки</h1>
 				</div>
 				<div className={styles.headerColumnRight}>
 					{

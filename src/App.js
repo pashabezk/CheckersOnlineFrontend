@@ -4,7 +4,6 @@ import {Layout, Spin} from "antd";
 import {Content, Footer} from "antd/es/layout/layout";
 import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import AppFooter from "./Components/Footer/Footer";
-import MessagesPage from "./Components/MessagesPage/MessagesPage";
 import AppHeader from "./Components/Header/Header";
 import GamePage from "./Components/GamePage/GamePage";
 
@@ -34,7 +33,6 @@ function App() {
 							<Route path="/" element={<Navigate to="/profile"/>}/>
 							<Route path="/profile" element={<ProfilePageContainer/>}/>
 							<Route path="/game" element={<GamePage/>}/>
-							<Route path="/messages" element={<MessagesPage/>}/>
 							<Route path="/login" element={<Login/>}/>
 							<Route path="*" element={<Navigate to="/"/>}/>
 						</Routes>

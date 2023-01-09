@@ -1,28 +1,24 @@
 import React from "react";
-import {LinkOutlined, MailOutlined, PlaySquareOutlined, UserOutlined} from "@ant-design/icons";
+import {AppstoreOutlined, PlaySquareOutlined, UserOutlined} from "@ant-design/icons";
 import {Menu} from "antd";
 import styles from "./PageWithDefaultMenuSidebar.module.css"
 import {useLocation, useNavigate} from "react-router-dom";
 
 const menuItems = [
 	{label: 'Профиль', icon: <UserOutlined/>, key: 'profile'},
-	{label: 'Сообщения', icon: <MailOutlined/>, key: 'messages'},
-	{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game'},
 	{
-		label: 'Раскрывашка',
-		icon: <LinkOutlined/>,
-		key: 'item-3',
-		children: [{
-			label: 'Подменю 1',
-			key: 'submenu-item-1'
-		}, {
-			label: 'Подменю 2',
-			key: 'submenu-item-2'
-		}],
+		label: 'Последние игры',
+		icon: <AppstoreOutlined/>,
+		key: 'games',
+		children: [
+			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game'},
+			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game1'},
+			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game2'},
+		],
 	},
 ];
 
-const PageWithDefaultMenuSidebar = ({children, ...props}) => {
+const PageWithDefaultMenuSidebar = ({children}) => {
 	const navigate = useNavigate();
 	const location = useLocation().pathname.split('/')[1];
 
@@ -36,7 +32,7 @@ const PageWithDefaultMenuSidebar = ({children, ...props}) => {
 				<Menu
 					mode="inline"
 					defaultSelectedKeys={[location]}
-					// defaultOpenKeys={['sub1']}
+					// defaultOpenKeys={['games']}
 					items={menuItems}
 					onSelect={onMenuSelect}
 				/>
