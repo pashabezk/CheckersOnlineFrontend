@@ -3,6 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER, selectAvailableFields, selectGameField, selectPlayerColor, selectSelectedCheckerPosition, setAvailableFields, setSelectedCheckerPosition} from "../../Redux/GameReducer";
 import GamePage from "./GamePage";
 import {useParams} from "react-router-dom";
+import PageNotFound from "../PageNotFound/PageNotFound";
+import withAuthRedirect from "../HOC/withAuthRedirect";
 
 export const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -19,7 +21,6 @@ const GamePageContainer = () => {
 
 	const params = useParams(); // использование параметров строки запроса
 	const gameId = params.gameId; // идентификатор игры
-	console.log(Number(gameId));
 
 	const gameField = useSelector(selectGameField);
 	const playerColor = useSelector(selectPlayerColor);
@@ -27,6 +28,10 @@ const GamePageContainer = () => {
 	const availableFields = useSelector(selectAvailableFields);
 
 	const dispatch = useDispatch();
+
+	if (!Number(gameId) || Number(gameId) < 0) { // если не удается превратить строку в число, то значит переданный параметр (gameId) задан неправильно
+		return <PageNotFound title="Невалидный url игры" message="Введите корректный url или выберите игру из списка в профиле"/>
+	}
 
 	const onSelectChecker = (position) => {
 		let numbers = [8, 7, 6, 5, 4, 3, 2, 1];
@@ -197,4 +202,4 @@ const GamePageContainer = () => {
 	);
 }
 
-export default GamePageContainer;
+export default withAuthRedirect(GamePageContainer);

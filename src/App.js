@@ -10,6 +10,7 @@ import GamePageContainer from "./Components/GamePage/GamePageContainer";
 const Login = React.lazy(() => import ("./Components/Login/Login"));
 // const GamePageContainer = React.lazy(() => import ("./Components/GamePage/GamePageContainer"));
 const ProfilePageContainer = React.lazy(() => import ("./Components/ProfilePage/ProfilePageContainer"));
+const PageNotFound = React.lazy(() => import ("./Components/PageNotFound/PageNotFound"));
 
 function App() {
 	return (
@@ -36,7 +37,7 @@ function App() {
 								<Route path=":gameId" element={<GamePageContainer/>}/>
 							</Route>
 							<Route path="/login" element={<Login/>}/>
-							<Route path="*" element={<Navigate to="/"/>}/>
+							<Route path="*" element={<PageNotFound/>}/>
 						</Routes>
 					</React.Suspense>
 				</Content>
