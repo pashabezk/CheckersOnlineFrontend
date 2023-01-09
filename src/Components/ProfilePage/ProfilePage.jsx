@@ -1,5 +1,5 @@
 import React from "react";
-import PageWithDefaultMenuSidebar from "../PageWithSideMenu/PageWithStandartMenu";
+import TemplatePageWithMenu from "../TemplatePageWithMenu/TemplatePageWithMenu";
 import {Avatar} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import styles from "./ProfilePage.module.css"
@@ -22,10 +22,10 @@ const UserPhotoAndLoginBlock = ({login}) => {
 
 const ProfilePage = ({login, gamesBlockProps}) => {
 	return (
-		<PageWithDefaultMenuSidebar>
+		<TemplatePageWithMenu>
 			<UserPhotoAndLoginBlock login={login}/>
 			<GamesBlock {...gamesBlockProps}/>
-		</PageWithDefaultMenuSidebar>
+		</TemplatePageWithMenu>
 	);
 }
 

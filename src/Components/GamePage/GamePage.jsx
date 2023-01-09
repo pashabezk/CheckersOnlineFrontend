@@ -1,6 +1,6 @@
 import React from "react";
 import CheckersField from "./CheckersField/CheckersField";
-import PageWithDefaultMenuSidebar from "../PageWithSideMenu/PageWithStandartMenu";
+import TemplatePageWithMenu from "../TemplatePageWithMenu/TemplatePageWithMenu";
 import {Button} from "antd";
 import Title from "antd/lib/typography/Title";
 import blackChecker from "../../Assets/Img/Chekers/Black.svg";
@@ -9,7 +9,7 @@ import styles from "./GamePage.module.css"
 
 const GamePage = ({checkersFieldProps}) => {
 	return (
-		<PageWithDefaultMenuSidebar>
+		<TemplatePageWithMenu>
 			<Title level={2}>
 				<span>Партия с OpponnentLogin</span>
 			</Title>
@@ -34,7 +34,7 @@ const GamePage = ({checkersFieldProps}) => {
 					</div>
 				</div>
 			</div>
-		</PageWithDefaultMenuSidebar>
+		</TemplatePageWithMenu>
 	);
 }
 

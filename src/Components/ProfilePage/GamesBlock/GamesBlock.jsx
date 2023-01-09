@@ -7,6 +7,7 @@ import Title from "antd/lib/typography/Title";
 import React from "react";
 import ModalCreateGame from "./ModalCreateGame";
 import ModalConnectToGame from "./ModalConnectToGame";
+import {NavLink} from "react-router-dom";
 
 // карточка с игрой
 // game = {
@@ -51,17 +52,19 @@ const GameNode = ({game}) => {
 	}
 
 	return (
-		<Card className={styles.gameCard + " " + background}>
-			{icon}&nbsp;&nbsp;
-			{
-				game.opponentId &&
-				<Tooltip title={"id: " + game.opponentId}>
-					<span className={styles.user}>{game.opponentLogin}</span>&nbsp;
-				</Tooltip>
-			}
-			<span>{gameStatus}</span>&nbsp;
-			<span className={styles.gameId}>(id: {game.id})</span>
-		</Card>
+		<NavLink to={"/game/" + game.id}>
+			<Card className={styles.gameCard + " " + background}>
+				{icon}&nbsp;&nbsp;
+				{
+					game.opponentId &&
+					<Tooltip title={"id: " + game.opponentId}>
+						<span className={styles.user}>{game.opponentLogin}</span>&nbsp;
+					</Tooltip>
+				}
+				<span>{gameStatus}</span>&nbsp;
+				<span className={styles.gameId}>(id: {game.id})</span>
+			</Card>
+		</NavLink>
 	);
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER, selectAvailableFields, selectGameField, selectPlayerColor, selectSelectedCheckerPosition, setAvailableFields, setSelectedCheckerPosition} from "../../Redux/GameReducer";
 import GamePage from "./GamePage";
+import {useParams} from "react-router-dom";
 
 export const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -15,6 +16,10 @@ export const findChecker = (gameField, position) => {
 }
 
 const GamePageContainer = () => {
+
+	const params = useParams(); // использование параметров строки запроса
+	const gameId = params.gameId; // идентификатор игры
+	console.log(Number(gameId));
 
 	const gameField = useSelector(selectGameField);
 	const playerColor = useSelector(selectPlayerColor);

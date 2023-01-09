@@ -32,7 +32,9 @@ function App() {
 						<Routes>
 							<Route path="/" element={<Navigate to="/profile"/>}/>
 							<Route path="/profile" element={<ProfilePageContainer/>}/>
-							<Route path="/game" element={<GamePageContainer/>}/>
+							<Route path="/game" element={<GamePageContainer/>}>
+								<Route path=":gameId" element={<GamePageContainer/>}/>
+							</Route>
 							<Route path="/login" element={<Login/>}/>
 							<Route path="*" element={<Navigate to="/"/>}/>
 						</Routes>
