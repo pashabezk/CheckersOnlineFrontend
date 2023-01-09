@@ -12,8 +12,8 @@ const menuItems = [
 		key: 'games',
 		children: [
 			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game'},
-			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game1'},
-			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game2'},
+			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game/1'},
+			{label: 'Игра', icon: <PlaySquareOutlined/>, key: 'game/2'},
 		],
 	},
 ];

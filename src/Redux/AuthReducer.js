@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {fetchLogIn, fetchLogOut, fetchWhoAmI} from "../API/AuthAPI";
 import {getTokenFromCookie, putTokenToCookie, removeTokenFromCookie} from "../Cookie/AuthWithCookie";
+import {fetchLoginTest} from "../API/TestAPI";
 // import {fetchLogin} from "../API/TestAPI";
 
 const initialState = {
@@ -14,8 +15,8 @@ const initialState = {
 // export const tryLogInAsync = createAsyncThunk(
 // 	'auth/tryLogIn',
 // 	async ({login, password}) => {
-// 		const response = await fetchLogin(login, password);
-// 		console.log("------------ login", response);
+// 		const response = await fetchLoginTest(); // hello
+// 		console.log("from reducer - ", response);
 // 		return response.data;
 // 	}
 // );

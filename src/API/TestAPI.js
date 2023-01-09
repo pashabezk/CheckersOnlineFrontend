@@ -10,6 +10,8 @@ const axiosInstance = axios.create({
 // 	return axiosInstance.get(`api/login`);
 // }
 
-export const fetchLogin = () => {
-	return axiosInstance.get(`hello`);
+export const fetchLoginTest = () => {
+	let a = axiosInstance.get(`test/hello`);
+	console.log("from api file - ", a);
+	return a;
 }

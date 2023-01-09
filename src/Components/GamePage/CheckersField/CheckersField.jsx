@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./CheckersField.module.css"
-import blackKing from "../../../Assets/Img/Chekers/BlackKing.svg";
-import whiteKing from "../../../Assets/Img/Chekers/WhiteKing.svg";
+import blackQueen from "../../../Assets/Img/Chekers/BlackQueen.svg";
+import whiteQueen from "../../../Assets/Img/Chekers/WhiteQueen.svg";
 import blackChecker from "../../../Assets/Img/Chekers/Black.svg";
 import whiteChecker from "../../../Assets/Img/Chekers/White.svg";
 import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER} from "../../../Redux/GameReducer";
-import {letters} from "../GamePage";
+import {letters} from "../GamePageContainer";
 
 const Checker = ({type, color, selected, onSelectChecker, position, playerColor}) => {
 	const checkerOnClick = () => {
@@ -17,8 +17,8 @@ const Checker = ({type, color, selected, onSelectChecker, position, playerColor}
 			className={styles.checker + (selected ? (" " + styles.checkerSelected) : (playerColor === color ? (" " + styles.checkerPlayer) : ""))}
 			src={
 				color === CHECKER_COLOR_BLACK
-					? (type === CHECKER_TYPE_CHECKER ? blackChecker : blackKing)
-					: (type === CHECKER_TYPE_CHECKER ? whiteChecker : whiteKing)
+					? (type === CHECKER_TYPE_CHECKER ? blackChecker : blackQueen)
+					: (type === CHECKER_TYPE_CHECKER ? whiteChecker : whiteQueen)
 			}
 			alt="checker"
 			onClick={playerColor === color ? checkerOnClick : undefined}

@@ -1,0 +1,43 @@
+.user {
+	font-size: 1.2rem;
+	display: flex;
+	gap: 10px;
+}
+
+.checkerImg {
+	width: 1.5rem;
+	height: auto;
+}
+
+.gameBlock {
+	margin-top: 15px;
+	width: 100%;
+	max-width: 600px;
+	display: flex;
+	flex-direction: column;
+}
+
+.checkersField {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
+
+.gameBlockFooterWrapper {
+	margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.gameBlockFooter {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	max-width: 80vh;
+}
+
+.gameBlockFooter p {
+	color: var(--text-unaccented);
+}

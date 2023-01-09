@@ -5,10 +5,10 @@ import {Content, Footer} from "antd/es/layout/layout";
 import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import AppFooter from "./Components/Footer/Footer";
 import AppHeader from "./Components/Header/Header";
-import GamePage from "./Components/GamePage/GamePage";
+import GamePageContainer from "./Components/GamePage/GamePageContainer";
 
 const Login = React.lazy(() => import ("./Components/Login/Login"));
-// const GamePage = React.lazy(() => import ("./Components/GamePage/GamePage"));
+// const GamePageContainer = React.lazy(() => import ("./Components/GamePage/GamePageContainer"));
 const ProfilePageContainer = React.lazy(() => import ("./Components/ProfilePage/ProfilePageContainer"));
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
 						<Routes>
 							<Route path="/" element={<Navigate to="/profile"/>}/>
 							<Route path="/profile" element={<ProfilePageContainer/>}/>
-							<Route path="/game" element={<GamePage/>}/>
+							<Route path="/game" element={<GamePageContainer/>}/>
 							<Route path="/login" element={<Login/>}/>
 							<Route path="*" element={<Navigate to="/"/>}/>
 						</Routes>
