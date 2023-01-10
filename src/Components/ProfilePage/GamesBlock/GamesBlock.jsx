@@ -2,12 +2,13 @@ import {GAME_STATUS_BLACK_TURN, GAME_STATUS_BLACK_WIN, GAME_STATUS_WAITING_FOR_O
 import {ClockCircleOutlined, MehOutlined, PlusSquareOutlined, RightSquareOutlined, TrophyOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import styles from "../ProfilePage.module.css";
 import {CHECKER_COLOR_BLACK, CHECKER_COLOR_WHITE} from "../../../Redux/GameReducer";
-import {Button, Card, message, Spin, Tooltip} from "antd";
+import {Button, Card, message, Tooltip} from "antd";
 import Title from "antd/lib/typography/Title";
 import React from "react";
 import ModalCreateGame from "./ModalCreateGame";
 import ModalConnectToGame from "./ModalConnectToGame";
 import {NavLink} from "react-router-dom";
+import LoaderFullSpace from "../../Common/LoaderFullSpace/LoaderFullSpace";
 
 // карточка с игрой
 // game = {
@@ -98,7 +99,7 @@ const GamesBlock = ({games, isGamesListLoading, isCreateGameLoading, onCreateNew
 			</div>
 			{
 				isGamesListLoading
-					? <Spin tip="Подгружаем данные"/>
+					? <div className={styles.loader}><LoaderFullSpace message="Подгружаем данные" size="medium"/></div>
 					: <div className={styles.gameCardBlock}>{gamesArr}</div>
 			}
 			<ModalCreateGame messageApi={messageApi} {...createGameModalProps}/>

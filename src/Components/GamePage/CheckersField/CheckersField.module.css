@@ -1,6 +1,4 @@
 .checkersField {
-	/*width: 500px;*/
-	/*height: 500px;*/
 	display: grid;
 	border: slategrey solid 2px;
 	max-height: 80vh;

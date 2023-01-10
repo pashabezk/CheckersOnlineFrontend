@@ -1,6 +1,18 @@
 const TEST_TOKEN = "test_token_asbsdanbhcjbbaAWQHJNXJNbjksc2234hbjsd";
 // TODO: заменить TEST_TOKEN на реальный токен, получаемый с сервера
 
+// регистрация
+export const fetchRegistration = (login, password) => {
+	return new Promise((resolve) =>
+		setTimeout(() => {
+			if (login.length > 6)
+				resolve({data: {error: 0, errorMsg: ""}})
+			else
+				resolve({data: {error: 1, errorMsg: "Логин слишком короткий"}})
+		}, 1000)
+	);
+};
+
 export function fetchLogIn(login, password) {
 	return new Promise((resolve) =>
 		setTimeout(() => {

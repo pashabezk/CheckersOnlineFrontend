@@ -1,4 +1,4 @@
-.loginContainer {
+.registrationContainer {
 	display: flex;
 	height: 100%;
 	min-height: 100%;
@@ -7,14 +7,14 @@
 	margin: auto;
 }
 
-.loginForm {
+.registrationForm {
 	vertical-align: center;
 	margin: auto;
 	width: 100%;
 	max-width: 500px;
 }
 
-.loginTitle {
+.registrationTitle {
 	margin: 10px 0;
 }
 

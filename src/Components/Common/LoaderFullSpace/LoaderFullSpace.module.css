@@ -1,4 +1,6 @@
 .loadingContainer {
+	width: 100%;
+	min-height: 30vh;
 	display: flex;
 	justify-content: center;
 	flex-grow: 1;

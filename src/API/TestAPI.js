@@ -1,17 +1,16 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-	// baseURL: "http://127.0.0.1:8000/",
-	baseURL: "http://home.ferrion.tech/",
+	baseURL: "https://home.ferrion.tech/",
 	withCredentials: true
 });
 
-// export const fetchLogin = () => {
-// 	return axiosInstance.get(`api/login`);
-// }
-
+// TODO delete
 export const fetchLoginTest = () => {
-	let a = axiosInstance.get(`test/hello`);
-	console.log("from api file - ", a);
-	return a;
-}
+	return axiosInstance.get(`test/hello`);
+};
+
+// регистрация
+export const fetchRegistration = (login, password) => {
+	return axiosInstance.post(`api/user`, {username: login, password});
+};
