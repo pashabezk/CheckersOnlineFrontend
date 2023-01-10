@@ -4,7 +4,7 @@ import logo from "../../Assets/Img/Chekers/White.svg"
 import {Button} from "antd";
 import {LogoutOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {selectIsAuthing, selectUserId, tryLogOutAsync} from "../../Redux/AuthReducer";
+import {selectIsAuthing, selectUserId, setLogoutData} from "../../Redux/AuthReducer";
 import {useNavigate} from "react-router-dom";
 
 const AppHeader = () => {
@@ -14,7 +14,7 @@ const AppHeader = () => {
 	const navigate = useNavigate();
 
 	const onLogoutButtonClick = () => {
-		dispatch(tryLogOutAsync());
+		dispatch(setLogoutData());
 	};
 
 	return (

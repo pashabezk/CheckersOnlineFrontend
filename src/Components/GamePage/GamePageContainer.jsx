@@ -1,10 +1,10 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER, selectAvailableFields, selectGameField, selectPlayerColor, selectSelectedCheckerPosition, setAvailableFields, setSelectedCheckerPosition} from "../../Redux/GameReducer";
-import GamePage from "./GamePage";
 import {useParams} from "react-router-dom";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import withAuthRedirect from "../HOC/withAuthRedirect";
+import GamePage from "./GamePage";
 
 export const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -198,6 +198,7 @@ const GamePageContainer = () => {
 	}
 
 	return (
+		// <PlayedGamePage winnerLogin={"login"} loserLogin={"user"}/>
 		<GamePage checkersFieldProps={checkersFieldProps}/>
 	);
 }

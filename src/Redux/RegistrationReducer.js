@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {fetchRegistration} from "../API/AuthAPI";
+import {fetchRegistration} from "../API/UserAPI";
 
 const initialState = {
 	isLoading: false,
@@ -10,9 +10,12 @@ const initialState = {
 export const tryRegisterAsync = createAsyncThunk(
 	'registration/registration',
 	async ({login, password}) => {
-		const response = await fetchRegistration(login, password);
-		// console.log("thunkResp ", response);
-		return response.data;
+		const response = await fetchRegistration(login, password)
+			.catch(reason => reason.response);
+		return {
+			status: response.status,
+			data: response.data
+		};
 	}
 );
 
@@ -35,11 +38,16 @@ export const registrationSlice = createSlice({
 			})
 			.addCase(tryRegisterAsync.fulfilled, (state, action) => {
 				state.isLoading = false;
-				if (action.payload.error === 0) {
-					state.isCompletedModalOpen = true;
-				}
-				else {
-					state.error = action.payload.errorMsg;
+				switch (action.payload.status) {
+					case 200:
+						state.isCompletedModalOpen = true;
+						break;
+					case 500:
+						state.error = "Ошибка. Попробуйте другой логин";
+						break;
+					default:
+						state.error = "Что-то пошло не так";
+						break;
 				}
 			})
 			.addCase(tryRegisterAsync.rejected, (state) => {

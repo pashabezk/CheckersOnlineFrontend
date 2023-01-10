@@ -1,46 +1,32 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {fetchLogIn, fetchLogOut, fetchWhoAmI} from "../API/AuthAPI";
-import {getTokenFromCookie, putTokenToCookie, removeTokenFromCookie} from "../Cookie/AuthWithCookie";
-import {fetchLoginTest} from "../API/TestAPI";
-// import {fetchLogin} from "../API/TestAPI";
+import {getTokenFromCookie, getUserIdFromCookie, putTokenToCookie, putUserIdToCookie, removeTokenFromCookie, removeUserIdFromCookie} from "../Cookie/AuthWithCookie";
+import {fetchLogin, fetchUserDataById} from "../API/UserAPI";
 
 const initialState = {
-	token: getTokenFromCookie(),
-	userId: null,
+	token: getTokenFromCookie(), // при инициализации попытка прочитать токен из куки
+	userId: getUserIdFromCookie(), // и идентификатор пользователя; это необходимо для поддержки браузерной сессии
 	login: null,
 	isAuthing: false,
 	error: null
 };
 
-// export const tryLogInAsync = createAsyncThunk(
-// 	'auth/tryLogIn',
-// 	async ({login, password}) => {
-// 		const response = await fetchLoginTest(); // hello
-// 		console.log("from reducer - ", response);
-// 		return response.data;
-// 	}
-// );
-
 export const tryLogInAsync = createAsyncThunk(
 	'auth/tryLogIn',
 	async ({login, password}) => {
-		const response = await fetchLogIn(login, password);
-		return response.data;
+		const response = await fetchLogin(login, password)
+			.catch(reason => reason.response);
+		return {
+			data: response.data,
+			status: response.status
+		};
 	}
 );
 
-export const tryLogOutAsync = createAsyncThunk(
-	'auth/tryLogOut',
-	async () => {
-		const response = await fetchLogOut();
-		return response.data;
-	}
-);
-
-export const getInfoFromTokenAsync = createAsyncThunk(
-	'auth/getInfoFromToken',
-	async (token) => {
-		const response = await fetchWhoAmI(token);
+export const tryGetLoginUserDataAsync = createAsyncThunk(
+	'auth/getLoginUserData',
+	async (id) => {
+		const response = await fetchUserDataById(id)
+			.catch(reason => reason.response);
 		return response.data;
 	}
 );
@@ -51,10 +37,17 @@ export const authSlice = createSlice({
 	reducers: {
 		setAuthError: (state, action) => {
 			state.error = action.payload;
+		},
+		// вызывается при нажатии на кнопку "Выйти"
+		setLogoutData: (state, action) => {
+			removeTokenFromCookie(); // удаление токена из cookie
+			removeUserIdFromCookie(); // удаление ИД пользователя из куки
+			state.isAuthing = false;
+			state.token = undefined;
+			state.userId = null;
+			state.login = null;
+			state.error = null;
 		}
-		// incrementByAmount: (state, action) => {
-		// 	state.value += action.payload;
-		// }
 	},
 	extraReducers: (builder) => {
 		builder
@@ -63,57 +56,47 @@ export const authSlice = createSlice({
 			})
 			.addCase(tryLogInAsync.fulfilled, (state, action) => {
 				state.isAuthing = false;
-				if (action.payload.error === 0) {
-					state.userId = action.payload.id;
-					state.login = action.payload.login;
-					state.token = action.payload.token;
-					state.error = null;
-					putTokenToCookie(action.payload.token); // сохранение полученного токена в куки
-				} else {
-					state.error = action.payload.errorMsg;
+				switch (action.payload.status) {
+					case 200:
+						state.userId = action.payload.data.user.id;
+						state.login = action.payload.data.user.username;
+						state.token = action.payload.data.token;
+						state.error = null;
+						putTokenToCookie(action.payload.data.token); // сохранение полученного токена в куки
+						putUserIdToCookie(action.payload.data.user.id);
+						break;
+					case 400:
+						state.error = "Неправильный логин или пароль";
+						break;
+					default:
+						state.error = "Что-то пошло не так";
+						break;
 				}
 			})
 			.addCase(tryLogInAsync.rejected, (state) => {
 				state.isAuthing = false;
 				state.error = "Что-то пошло не так";
 			})
-			.addCase(tryLogOutAsync.pending, (state) => {
-				state.isAuthing = true;
-				state.token = undefined;
-				removeTokenFromCookie(); // удаление токена из cookie
-			})
-			.addCase(tryLogOutAsync.fulfilled, (state, action) => {
-				state.isAuthing = false;
-				if (action.payload.error === 0) {
-					state.userId = null;
-					state.login = null;
-					state.error = null;
-				}
-			})
-			.addCase(getInfoFromTokenAsync.rejected, (state) => {
-				state.isAuthing = false;
-			})
-			.addCase(getInfoFromTokenAsync.pending, (state) => {
+			.addCase(tryGetLoginUserDataAsync.pending, (state) => {
 				state.isAuthing = true;
 			})
-			.addCase(getInfoFromTokenAsync.fulfilled, (state, action) => {
+			.addCase(tryGetLoginUserDataAsync.fulfilled, (state, action) => {
 				state.isAuthing = false;
-				if (action.payload.error === 0) {
-					state.userId = action.payload.id;
-					state.login = action.payload.login;
-					state.error = null;
-				} else {
-					state.error = action.payload.errorMsg;
+				if (action.payload.username) { // если удалось получить пользователя, то сохраним его логин
+					state.login = action.payload.username;
+				} else { // иначе сбрасываем сессию
+					removeTokenFromCookie();
+					removeUserIdFromCookie();
 				}
 			})
-			.addCase(tryLogOutAsync.rejected, (state) => {
+			.addCase(tryGetLoginUserDataAsync.rejected, (state) => {
 				state.isAuthing = false;
 			});
 	},
 });
 
 // actions
-export const {setAuthError} = authSlice.actions;
+export const {setAuthError, setLogoutData} = authSlice.actions;
 
 // selectors
 export const selectLogin = (state) => state.auth.login;
