@@ -6,24 +6,15 @@ import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import AppFooter from "./Components/Footer/Footer";
 import AppHeader from "./Components/Header/Header";
 import LoaderFullSpace from "./Components/Common/LoaderFullSpace/LoaderFullSpace";
-import Registration from "./Components/Registration/Registration";
 
 const Login = React.lazy(() => import ("./Components/Login/Login"));
 const GamePageContainer = React.lazy(() => import ("./Components/GamePage/GamePageContainer"));
 const ProfilePageContainer = React.lazy(() => import ("./Components/ProfilePage/ProfilePageContainer"));
 const PageNotFound = React.lazy(() => import ("./Components/PageNotFound/PageNotFound"));
+const Registration = React.lazy(() => import ("./Components/Registration/Registration"));
 
 function App() {
 	return (
-		// styling
-		// <ConfigProvider
-		// 	theme={{
-		// 		token: {
-		// 			colorPrimary: '#00b96b',
-		// 		},
-		// 	}}
-		// >
-
 		// HashRouter only for GitHub pages
 		// <BrowserRouter basename={process.env.PUBLIC_URL}> // use instead HashRouter in real project
 		<HashRouter>

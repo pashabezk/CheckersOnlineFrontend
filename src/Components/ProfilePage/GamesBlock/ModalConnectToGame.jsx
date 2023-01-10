@@ -33,6 +33,8 @@ const ModalConnectToGame = ({isConnectGameModalOpen, isConnectGameLoading, conne
 		<Modal
 			title="Присоединиться к игре"
 			open={isConnectGameModalOpen}
+			centered
+			onCancel={onConnectGameModalCancelButtonClick}
 			footer={[
 				<Button
 					type="default"

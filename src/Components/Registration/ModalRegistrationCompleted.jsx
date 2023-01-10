@@ -10,6 +10,7 @@ const ModalRegistrationCompleted = ({isCompletedModalOpen, onButtonClick}) => {
 			title="Авторизация прошла успешно"
 			open={isCompletedModalOpen}
 			closable={false}
+			centered
 			footer={[
 				<Button
 					type="primary"

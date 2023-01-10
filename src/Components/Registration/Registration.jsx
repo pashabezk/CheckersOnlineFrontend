@@ -36,14 +36,14 @@ const Registration = () => {
 	return (
 		<div className={styles.registrationContainer}>
 			<Form
-				labelCol={{span: 7}}
+				labelCol={{span: 6}}
 				wrapperCol={{span: 16}}
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}
 				onFieldsChange={onFieldsChange}
 				requiredMark={false}
 				className={styles.registrationForm}>
-				<Form.Item wrapperCol={{offset: 7}} className={styles.registrationTitle}>
+				<Form.Item wrapperCol={{offset: 6}} className={styles.registrationTitle}>
 					<Title level={3}>Регистрация</Title>
 				</Form.Item>
 				<Form.Item
@@ -51,7 +51,16 @@ const Registration = () => {
 					name="login"
 					rules={[{
 						required: true,
-						message: 'Поле логин обязательно',
+						message: "Поле логин обязательно",
+					},{
+						min: 5,
+						message: "Минимальная длина 5 символов"
+					},{
+						pattern: /^[A-Za-z0-9]*$/,
+						message: "Только латинские буквы и цифры"
+					},{
+						pattern: /^\D/,
+						message: "Первым символом должна быть буква"
 					}]}>
 					<Input/>
 				</Form.Item>
@@ -60,21 +69,33 @@ const Registration = () => {
 					name="password"
 					rules={[{
 						required: true,
-						message: 'Поле пароль обязательно',
+						message: "Поле пароль обязательно",
+					},{
+						pattern: /^[A-Za-z0-9]*$/,
+						message: "Только латинские буквы и цифры"
+					},{
+						min: 8,
+						message: "Минимальная длина пароля 8 символов"
 					}]}>
 					<Input.Password/>
 				</Form.Item>
 				<Form.Item
-					label="Повторите пароль"
+					label="Ещё раз"
 					name="password2"
 					rules={[{
 						required: true,
-						message: 'Повторите пароль',
+						message: "Повторите пароль",
+					},{
+						pattern: /^[A-Za-z0-9]*$/,
+						message: "Только латинские буквы и цифры"
+					},{
+						min: 8,
+						message: "Минимальная длина пароля 8 символов"
 					}]}>
 					<Input.Password/>
 				</Form.Item>
 				<Form.Item
-					wrapperCol={{offset: 7}}
+					wrapperCol={{offset: 6}}
 					validateStatus={error ? "error" : "success"}
 					help={error}>
 					<div className={styles.buttonBlock}>
