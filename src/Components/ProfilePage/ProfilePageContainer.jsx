@@ -18,12 +18,14 @@ import {
 	tryCreateNewGameAsync,
 	tryGetGamesListAsync
 } from "../../Redux/ProfileReducer";
-import {selectLogin} from "../../Redux/AuthReducer";
+import {selectLogin, selectUserId} from "../../Redux/AuthReducer";
+import {GAME_STATUS_IN_PROCESS, GAME_STATUS_OPPONENT_TURN, GAME_STATUS_YOUR_TURN} from "../../Strings";
 
 const ProfilePageContainer = () => {
 
 	const login = useSelector(selectLogin);
-	const games = useSelector(selectGames);
+	const userId = useSelector(selectUserId);
+	let games = useSelector(selectGames);
 	const isGamesListLoading = useSelector(selectIsGamesListLoading);
 	const isCreateGameLoading = useSelector(selectIsCreateGameLoading);
 	const createdGameId = useSelector(selectCreatedGameId);
@@ -35,10 +37,36 @@ const ProfilePageContainer = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (games === null) {
+		if (games === null && !isGamesListLoading) {
 			dispatch(tryGetGamesListAsync());
 		}
 	});
+
+	if (games) {
+		games = games.map(game => {
+			let newGame = {...game};
+			if (game.status === GAME_STATUS_IN_PROCESS) {
+				if (game.firstUserLogin === login) {
+					newGame.opponentLogin = game.secondUserLogin;
+					newGame.opponentId = game.secondUserId;
+					if (game.firstUserColor === game.turnOf) {
+						newGame.status = GAME_STATUS_YOUR_TURN;
+					} else {
+						newGame.status = GAME_STATUS_OPPONENT_TURN;
+					}
+				} else {
+					newGame.opponentLogin = game.firstUserLogin;
+					newGame.opponentId = game.firstUserId;
+					if (game.secondUserColor === game.turnOf) {
+						newGame.status = GAME_STATUS_YOUR_TURN;
+					} else {
+						newGame.status = GAME_STATUS_OPPONENT_TURN;
+					}
+				}
+			}
+			return newGame;
+		});
+	}
 
 	// нажатие по кнопке "Создать" для создания новой игры
 	const onCreateNewGameButtonClick = () => {
@@ -54,11 +82,14 @@ const ProfilePageContainer = () => {
 	// установка значения открытия модульного окна "Присоединиться к игре"
 	const setConnectToGameModalOpened = (open) => {
 		dispatch(setIsConnectGameModalOpen(open));
+		if(!open) { // если окно закрыто, значит надо обновить список игр
+			dispatch(tryGetGamesListAsync());
+		}
 	};
 
 	// нажатие Ок в модульном окне подключения к игре
 	const onConnectToGameModalFormSubmit = (gameId) => {
-		dispatch(tryConnectToGameAsync(gameId));
+		dispatch(tryConnectToGameAsync({gameId, userId}));
 	}
 
 	// упаковка props для более удобной передачи между компонентами

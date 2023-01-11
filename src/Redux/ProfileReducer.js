@@ -1,15 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {fetchConnectToGame, fetchCreateGame, fetchGetGamesList} from "../API/GameAPI";
 
-export const GAME_STATUS_WHITE_TURN = "WHITE TURN";
-export const GAME_STATUS_BLACK_TURN = "BLACK TURN";
-export const GAME_STATUS_BLACK_WIN = "BLACK WIN";
-export const GAME_STATUS_WHITE_WIN = "WHITE WIN";
-export const GAME_STATUS_WAITING_FOR_OPPONENT = "WAITING FOR OPPONENT";
-
 const initialState = {
 	games: null, // [] // список игр в профиле
 	isGamesListLoading: false, // флаг загрузки списка игр в профиле
+	gamesListError: null, // сообщение об ошибке при получении данных // TODO не обработано
 
 	// работа с модальным окном для создания новой игры
 	isCreateGameModalOpen: false, // флаг отображения модульного окна создания новой игры
@@ -27,8 +22,11 @@ const initialState = {
 export const tryGetGamesListAsync = createAsyncThunk(
 	'profile/getGamesList',
 	async () => {
-		const response = await fetchGetGamesList();
-		return response.data;
+		const response = await fetchGetGamesList().catch(reason => reason.response);
+		return {
+			data: response.data,
+			status: response.status
+		};
 	}
 );
 
@@ -36,17 +34,24 @@ export const tryGetGamesListAsync = createAsyncThunk(
 export const tryCreateNewGameAsync = createAsyncThunk(
 	'profile/createNewGame',
 	async () => {
-		const response = await fetchCreateGame();
-		return response.data;
+		const response = await fetchCreateGame().catch(reason => reason.response);
+		return {
+			data: response.data,
+			status: response.status
+		};
 	}
 );
 
 // запрос на подключение к игре
 export const tryConnectToGameAsync = createAsyncThunk(
 	'profile/connectToGame',
-	async (gameId) => {
-		const response = await fetchConnectToGame(gameId);
-		return response.data;
+	async ({gameId, userId}) => {
+		const response = await fetchConnectToGame(gameId, userId).catch(reason => reason.response);
+		console.log(response)
+		return {
+			data: response.data,
+			status: response.status
+		};
 	}
 );
 
@@ -78,21 +83,32 @@ export const profileSlice = createSlice({
 		builder
 			.addCase(tryGetGamesListAsync.pending, (state) => {
 				state.isGamesListLoading = true;
+				state.gamesListError = null;
 			})
 			.addCase(tryGetGamesListAsync.fulfilled, (state, action) => {
 				state.isGamesListLoading = false;
-				state.games = action.payload;
+				if (action.payload.status === 200)
+					state.games = action.payload.data;
+				else state.gamesListError = "Не удалось получить данные";
 			})
 			.addCase(tryGetGamesListAsync.rejected, (state) => {
 				state.isGamesListLoading = false;
+				state.gamesListError = "Не удалось получить данные";
 			})
 			.addCase(tryCreateNewGameAsync.pending, (state) => {
 				state.isCreateGameLoading = true;
 			})
 			.addCase(tryCreateNewGameAsync.fulfilled, (state, action) => {
 				state.isCreateGameLoading = false;
-				state.isCreateGameModalOpen = true;
-				state.createdGameId = action.payload;
+				switch (action.payload.status) {
+					case 200: // удалось создать новую игру
+						state.isCreateGameModalOpen = true;
+						state.createdGameId = action.payload.data.id;
+						break;
+					default:
+						// TODO добавить обработку ошибки неудачной попытки создания игры
+						break;
+				}
 			})
 			.addCase(tryCreateNewGameAsync.rejected, (state) => {
 				state.isCreateGameLoading = false;
@@ -103,11 +119,12 @@ export const profileSlice = createSlice({
 			})
 			.addCase(tryConnectToGameAsync.fulfilled, (state, action) => {
 				state.isConnectGameLoading = false;
-				if (action.payload.error) {
+				if(action.payload.status === 204) {
+					state.connectedGameId = true;
+				}
+				else {
 					state.connectedGameId = null;
-					state.connectGameError = action.payload.error;
-				} else {
-					state.connectedGameId = action.payload.connectedGameId;
+					state.connectGameError = "Не удалось подключиться к игре";
 				}
 			})
 			.addCase(tryConnectToGameAsync.rejected, (state) => {

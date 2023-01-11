@@ -1,10 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-
-// константы для типов и цветов
-export const CHECKER_COLOR_WHITE = "WHITE";
-export const CHECKER_COLOR_BLACK = "BLACK";
-export const CHECKER_TYPE_CHECKER = "CHECKER";
-export const CHECKER_TYPE_QUEEN = "QUEEN";
+import {CHECKER_COLOR_BLACK} from "../Strings";
 
 const gameFieldRandom = [
 	{

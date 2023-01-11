@@ -1,71 +1,90 @@
-import {GAME_STATUS_BLACK_TURN, GAME_STATUS_BLACK_WIN, GAME_STATUS_WAITING_FOR_OPPONENT, GAME_STATUS_WHITE_TURN, GAME_STATUS_WHITE_WIN} from "../../../Redux/ProfileReducer";
+import {GAME_STATUS_FINISHED, GAME_STATUS_INIT, GAME_STATUS_OPPONENT_TURN, GAME_STATUS_OPPONENT_WIN, GAME_STATUS_YOU_WIN, GAME_STATUS_YOUR_TURN} from "../../../Strings";
 import {ClockCircleOutlined, MehOutlined, PlusSquareOutlined, RightSquareOutlined, TrophyOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import styles from "../ProfilePage.module.css";
-import {CHECKER_COLOR_BLACK, CHECKER_COLOR_WHITE} from "../../../Redux/GameReducer";
 import {Button, Card, message, Tooltip} from "antd";
 import Title from "antd/lib/typography/Title";
 import React from "react";
 import ModalCreateGame from "./ModalCreateGame";
 import ModalConnectToGame from "./ModalConnectToGame";
-import {NavLink} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import LoaderFullSpace from "../../Common/LoaderFullSpace/LoaderFullSpace";
 
 // карточка с игрой
 // game = {
-// 	id: 1,
-// 	opponentId: 32,
-// 	opponentLogin: "UserLogin",
-// 	playerColor: "BLACK",
-// 	status: GAME_STATUS_WHITE_TURN
+// 	id: 6,
+// 	firstUserColor: "WHITE",
+// 	firstUserId: 4,
+// 	secondUserId: 1,
+// 	secondUserLogin: "login1",
+// 	firstUserLogin: "login2",
+// 	secondUserColor: "BLACK",
+// 	status: "IN_PROCESS"
 // }
 const GameNode = ({game}) => {
+
+	const navigate = useNavigate(); // хук для перехода между страницами
+
 	let gameStatus = game.status; // статус игры
 	let icon; // иконка
 	let background; // стиль фона для карточки
-	if (gameStatus === GAME_STATUS_WAITING_FOR_OPPONENT) {
-		gameStatus = "Ожидаем соперника";
-		icon = <ClockCircleOutlined/>;
-		background = styles.waiting;
-	} else {
-		if ((gameStatus === GAME_STATUS_WHITE_WIN && game.playerColor === CHECKER_COLOR_WHITE) ||
-			(gameStatus === GAME_STATUS_BLACK_WIN && game.playerColor === CHECKER_COLOR_BLACK)) {
+
+	switch (gameStatus) {
+		case GAME_STATUS_INIT:
+			gameStatus = "Ожидаем соперника";
+			icon = <ClockCircleOutlined/>;
+			background = styles.waiting;
+			break;
+		case GAME_STATUS_YOUR_TURN:
+			gameStatus = "Ваш ход";
+			icon = <RightSquareOutlined/>;
+			background = styles.ready;
+			break;
+		case GAME_STATUS_OPPONENT_TURN:
+			gameStatus = "Ход соперника";
+			icon = <ClockCircleOutlined/>;
+			background = styles.waiting;
+			break;
+		case GAME_STATUS_YOU_WIN:
 			gameStatus = "Вы победили";
 			icon = <TrophyOutlined/>;
 			background = styles.win;
-		} else {
-			if (gameStatus === GAME_STATUS_WHITE_WIN || gameStatus === GAME_STATUS_BLACK_WIN) {
-				gameStatus = "Вы проиграли";
-				icon = <MehOutlined/>;
-				background = styles.lose;
-			} else {
-				if ((gameStatus === GAME_STATUS_WHITE_TURN && game.playerColor === CHECKER_COLOR_WHITE) ||
-					(gameStatus === GAME_STATUS_BLACK_TURN && game.playerColor === CHECKER_COLOR_BLACK)) {
-					gameStatus = "Ваш ход";
-					icon = <RightSquareOutlined/>;
-					background = styles.ready;
-				} else {
-					gameStatus = "Ход соперника";
-					icon = <ClockCircleOutlined/>;
-					background = styles.waiting;
-				}
-			}
-		}
+			break;
+		case GAME_STATUS_OPPONENT_WIN:
+			gameStatus = "Вы проиграли";
+			icon = <MehOutlined/>;
+			background = styles.lose;
+			break;
+
+		case GAME_STATUS_FINISHED: // TODO это в будущем следует убрать и пользоваться двумя кейсами выше
+			gameStatus = "Игра окончена";
+			icon = <TrophyOutlined/>;
+			background = styles.win;
+			break;
+
+		default:
+			gameStatus = "Какая-то ошибка";
+			icon = <MehOutlined/>;
+			background = styles.lose;
+			break;
 	}
 
+	const onGameCardClick = () => {
+		if (game.status !== GAME_STATUS_INIT) // переход на страничку игры, если она уже идёт
+			navigate("/game/" + game.id);
+	};
+
 	return (
-		<NavLink to={"/game/" + game.id}>
-			<Card className={styles.gameCard + " " + background}>
-				{icon}&nbsp;&nbsp;
-				{
-					game.opponentId &&
-					<Tooltip title={"id: " + game.opponentId}>
-						<span className={styles.user}>{game.opponentLogin}</span>&nbsp;
-					</Tooltip>
-				}
-				<span>{gameStatus}</span>&nbsp;
-				<span className={styles.gameId}>(id: {game.id})</span>
-			</Card>
-		</NavLink>
+		<Card className={styles.gameCard + " " + background} onClick={onGameCardClick}>
+			{icon}&nbsp;&nbsp;
+			{
+				game.opponentId &&
+				<Tooltip title={"id: " + game.opponentId}>
+					<span className={styles.user}>{game.opponentLogin}</span>&nbsp;
+				</Tooltip>
+			}
+			<span>{gameStatus}</span>&nbsp;
+			<span className={styles.gameId}>(id: {game.id})</span>
+		</Card>
 	);
 };
 
@@ -74,8 +93,12 @@ const GamesBlock = ({games, isGamesListLoading, isCreateGameLoading, onCreateNew
 	const [messageApi, contextHolder] = message.useMessage(); // для отображения всплывающего сообщения
 
 	let gamesArr = [];
-	if (!isGamesListLoading && games && games !== []) {
+	if (!isGamesListLoading && games) {
 		gamesArr = games.map(game => <GameNode key={game.id} game={game}/>);
+	}
+	if (Array.isArray(games)) {
+		if (games.length === 0)
+			gamesArr = <p className={styles.gameId}>Вы ещё не сыграли ни одной партии.<br/>С помощью кнопок выше Вы можете создать свою первую партию или подключиться к партии, созданной вашим другом</p>;
 	}
 
 	return (
@@ -103,7 +126,7 @@ const GamesBlock = ({games, isGamesListLoading, isCreateGameLoading, onCreateNew
 					: <div className={styles.gameCardBlock}>{gamesArr}</div>
 			}
 			<ModalCreateGame messageApi={messageApi} {...createGameModalProps}/>
-			<ModalConnectToGame {...connectToGameModalProps}/>
+			<ModalConnectToGame messageApi={messageApi} {...connectToGameModalProps}/>
 		</div>
 	);
 };

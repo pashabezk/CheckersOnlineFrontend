@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 const {Text} = Typography;
 
 // Модульное окно для подключения к уже существующей игре
-const ModalConnectToGame = ({isConnectGameModalOpen, isConnectGameLoading, connectedGameId, connectGameError, setConnectToGameModalOpened, onConnectToGameModalFormSubmit}) => {
+const ModalConnectToGame = ({messageApi, isConnectGameModalOpen, isConnectGameLoading, connectedGameId, connectGameError, setConnectToGameModalOpened, onConnectToGameModalFormSubmit}) => {
 
 	const [formConnectToGame] = Form.useForm(); // для работы с формой в модульном окне подключения к игре
 	const navigate = useNavigate(); // хук для перехода на другие страницы
@@ -13,7 +13,11 @@ const ModalConnectToGame = ({isConnectGameModalOpen, isConnectGameLoading, conne
 	useEffect(() => {
 		if (connectedGameId) { // если появился идентификатор подключения к игре, значит удалось подсоединиться к игре, значит нужно перейти к игре
 			setConnectToGameModalOpened(false); // закрытие модульного окна
-			navigate("/game/" + connectedGameId); // переход на страницу игры
+			messageApi.open({ // отображение всплывающего уведомления об успехе подключения
+				type: "success",
+				content: "Игра добавлена в ваш список",
+				duration: 5
+			});
 		}
 	}, [connectedGameId]);
 

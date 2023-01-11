@@ -85,8 +85,13 @@ export const authSlice = createSlice({
 				if (action.payload.username) { // если удалось получить пользователя, то сохраним его логин
 					state.login = action.payload.username;
 				} else { // иначе сбрасываем сессию
-					removeTokenFromCookie();
-					removeUserIdFromCookie();
+					removeTokenFromCookie(); // удаление токена из cookie
+					removeUserIdFromCookie(); // удаление ИД пользователя из куки
+					state.isAuthing = false;
+					state.token = undefined;
+					state.userId = null;
+					state.login = null;
+					state.error = null;
 				}
 			})
 			.addCase(tryGetLoginUserDataAsync.rejected, (state) => {

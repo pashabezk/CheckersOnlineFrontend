@@ -4,7 +4,7 @@ import blackQueen from "../../../Assets/Img/Chekers/BlackQueen.svg";
 import whiteQueen from "../../../Assets/Img/Chekers/WhiteQueen.svg";
 import blackChecker from "../../../Assets/Img/Chekers/Black.svg";
 import whiteChecker from "../../../Assets/Img/Chekers/White.svg";
-import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER} from "../../../Redux/GameReducer";
+import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER} from "../../../Strings";
 import {letters} from "../GamePageContainer";
 
 const Checker = ({type, color, selected, onSelectChecker, position, playerColor}) => {
