@@ -1,4 +1,4 @@
-import {GAME_STATUS_FINISHED, GAME_STATUS_INIT, GAME_STATUS_OPPONENT_TURN, GAME_STATUS_OPPONENT_WIN, GAME_STATUS_YOU_WIN, GAME_STATUS_YOUR_TURN} from "../../../Strings";
+import {GAME_STATUS_INIT, GAME_STATUS_OPPONENT_TURN, GAME_STATUS_OPPONENT_WIN, GAME_STATUS_YOU_WIN, GAME_STATUS_YOUR_TURN} from "../../../Strings";
 import {ClockCircleOutlined, MehOutlined, PlusSquareOutlined, RightSquareOutlined, TrophyOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import styles from "../ProfilePage.module.css";
 import {Button, Card, message, Tooltip} from "antd";
@@ -54,13 +54,6 @@ const GameNode = ({game}) => {
 			icon = <MehOutlined/>;
 			background = styles.lose;
 			break;
-
-		case GAME_STATUS_FINISHED: // TODO это в будущем следует убрать и пользоваться двумя кейсами выше
-			gameStatus = "Игра окончена";
-			icon = <TrophyOutlined/>;
-			background = styles.win;
-			break;
-
 		default:
 			gameStatus = "Какая-то ошибка";
 			icon = <MehOutlined/>;

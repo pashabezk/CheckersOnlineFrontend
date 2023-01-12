@@ -47,7 +47,6 @@ export const tryConnectToGameAsync = createAsyncThunk(
 	'profile/connectToGame',
 	async ({gameId, userId}) => {
 		const response = await fetchConnectToGame(gameId, userId).catch(reason => reason.response);
-		console.log(response)
 		return {
 			data: response.data,
 			status: response.status
@@ -59,6 +58,9 @@ export const profileSlice = createSlice({
 	name: "profile",
 	initialState,
 	reducers: {
+		setGamesList: (state, action) => {
+			state.games = action.payload;
+		},
 		setIsCreateGameModalOpen: (state, action) => {
 			if (action.payload) {
 				state.isCreateGameModalOpen = true;
@@ -119,10 +121,9 @@ export const profileSlice = createSlice({
 			})
 			.addCase(tryConnectToGameAsync.fulfilled, (state, action) => {
 				state.isConnectGameLoading = false;
-				if(action.payload.status === 204) {
+				if (action.payload.status === 200) {
 					state.connectedGameId = true;
-				}
-				else {
+				} else {
 					state.connectedGameId = null;
 					state.connectGameError = "Не удалось подключиться к игре";
 				}
@@ -134,7 +135,7 @@ export const profileSlice = createSlice({
 });
 
 // actions
-export const {setIsCreateGameModalOpen, setIsConnectGameModalOpen} = profileSlice.actions;
+export const {setIsCreateGameModalOpen, setIsConnectGameModalOpen, setGamesList} = profileSlice.actions;
 
 // selectors
 export const selectGames = (state) => state.profile.games;

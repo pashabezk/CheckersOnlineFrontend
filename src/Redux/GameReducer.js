@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {GAME_STATUS_INIT} from "../Strings";
-import {fetchAvailableFields, fetchCheckersField, fetchCreateCheckerStep, fetchGetGamesList} from "../API/GameAPI";
+import {fetchAvailableFields, fetchCapitulate, fetchCheckersField, fetchCreateCheckerStep, fetchGameData} from "../API/GameAPI";
 import {reinterpretGameData} from "../Utils/Checkers";
 
 const initialState = {
@@ -10,23 +10,25 @@ const initialState = {
 	isGameDataLoading: false, // флаг загрузки данных об игре
 	gameDataError: null, // сообщение об ошибке при загрузке игровых данных
 
-	selectedCheckerPosition: null,
+	selectedCheckerPosition: null, // позиция выбранной шашки в шашечной нотации
 	availableFields: [], // поля доступные для хода, описываются в шашечной нотации a1, g8
-	gameField: null,
+	gameField: null, // игровое поле (массив с данными о шашках)
 	isGameFieldLoading: false, // загрузка данных о поле
-	gameFieldError: null
+	gameFieldError: null, // текст ошибки при попытке загрузить игровое поле
+
+	isCapitulating: false // индикатор загрузки запроса на капитуляцию
 };
 
 // получение данных об игре
 export const tryGetGameDataAsync = createAsyncThunk(
 	'game/tryGetGameData',
-	async ({gameId, userLogin}) => {
-		const response = await fetchGetGamesList().catch(reason => reason.response);
+	async ({gameId, userId}) => {
+		const response = await fetchGameData(gameId).catch(reason => reason.response);
 		return {
 			data: response.data,
 			status: response.status,
 			gameId,
-			userLogin
+			userId
 		};
 	}
 );
@@ -67,6 +69,18 @@ export const tryCreateCheckerStepAsync = createAsyncThunk(
 	}
 );
 
+// запрос на капитуляцию (сдаться)
+export const tryCapitulateAsync = createAsyncThunk(
+	'game/tryCapitulate',
+	async (gameId) => {
+		const response = await fetchCapitulate(gameId).catch(reason => reason.response);
+		return {
+			data: response.data,
+			status: response.status
+		};
+	}
+);
+
 export const gameSlice = createSlice({
 	name: "game",
 	initialState,
@@ -97,17 +111,13 @@ export const gameSlice = createSlice({
 				state.gameField = null;
 				switch (action.payload.status) {
 					case 200: // удалось загрузить данные об игре
-
-						// на данный момент сервер выдает данные обо всех играх, поэтому нужно получить нужную
-						const gameData = action.payload.data.filter(game => game.id === Number(action.payload.gameId));
+						const gameData = action.payload.data;
 						if (gameData.length === 1) {
 							if (gameData[0].status === GAME_STATUS_INIT) {
 								state.gameDataError = "Соперник ещё не подключился";
 								break;
 							}
-							const reinterpretData = reinterpretGameData(gameData[0], action.payload.userLogin);
-							console.log(reinterpretData)
-							state.gameData = reinterpretData;
+							state.gameData = reinterpretGameData(gameData[0], action.payload.userId);
 						} else {
 							state.gameDataError = "Не удалось загрузить игру с таким идентификатором";
 						}
@@ -168,7 +178,6 @@ export const gameSlice = createSlice({
 			})
 			.addCase(tryCreateCheckerStepAsync.fulfilled, (state, action) => {
 				state.isGameFieldLoading = false;
-				console.log(action.payload)
 				switch (action.payload.status) {
 					case 204: // удалось сделать ход
 						state.gameData = null; // если ход был удачным, необходимо обновить информацию об игре, чтобы подгрузился статус игры
@@ -181,6 +190,26 @@ export const gameSlice = createSlice({
 			.addCase(tryCreateCheckerStepAsync.rejected, (state) => {
 				state.isGameFieldLoading = false;
 				state.gameFieldError = "Не удалось сделать ход";
+			})
+			.addCase(tryCapitulateAsync.pending, (state) => {
+				state.isCapitulating = true;
+				state.gameFieldError = null;
+				state.availableFields = [];
+			})
+			.addCase(tryCapitulateAsync.fulfilled, (state, action) => {
+				state.isCapitulating = false;
+				switch (action.payload.status) {
+					case 200: // капитуляция удалась
+						state.gameField = null; // поле необходимо очистить
+						state.gameData = null; // необходимо обновить информацию об игре, чтобы подгрузился статус игры
+						break;
+					default:
+						state.gameFieldError = "Не удалось сделать ход";
+						break;
+				}
+			})
+			.addCase(tryCapitulateAsync.rejected, (state) => {
+				state.isCapitulating = false;
 			});
 	},
 });
@@ -198,5 +227,6 @@ export const selectIsGameDataLoading = (state) => state.game.isGameDataLoading;
 export const selectGameDataError = (state) => state.game.gameDataError;
 export const selectIsGameFieldLoading = (state) => state.game.isGameFieldLoading;
 export const selectGameFieldError = (state) => state.game.gameFieldError;
+export const selectIsCapitulating = (state) => state.game.isCapitulating;
 
 export default gameSlice.reducer;

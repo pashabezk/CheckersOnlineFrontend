@@ -7,11 +7,15 @@ import {
 	selectGameField,
 	selectGameFieldError,
 	selectGameId,
+	selectIsCapitulating,
 	selectIsGameDataLoading,
 	selectIsGameFieldLoading,
 	selectSelectedCheckerPosition,
 	setGameId,
-	setSelectedCheckerPosition, tryCreateCheckerStepAsync, tryGetAvailableFieldsForCheckerAsync,
+	setSelectedCheckerPosition,
+	tryCapitulateAsync,
+	tryCreateCheckerStepAsync,
+	tryGetAvailableFieldsForCheckerAsync,
 	tryGetCheckersFieldAsync,
 	tryGetGameDataAsync
 } from "../../Redux/GameReducer";
@@ -19,10 +23,11 @@ import {useParams} from "react-router-dom";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import withAuthRedirect from "../HOC/withAuthRedirect";
 import GamePage from "./GamePage";
-import {GAME_STATUS_FINISHED} from "../../Strings";
+import {GAME_STATUS_FINISHED, GAME_STATUS_OPPONENT_WIN, GAME_STATUS_YOU_WIN} from "../../Strings";
 import PlayedGamePage from "./PlayedGamePage";
-import {selectLogin} from "../../Redux/AuthReducer";
+import {selectLogin, selectUserId} from "../../Redux/AuthReducer";
 import LoaderFullSpace from "../Common/LoaderFullSpace/LoaderFullSpace";
+import {setGamesList} from "../../Redux/ProfileReducer";
 
 export const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -41,6 +46,7 @@ const GamePageContainer = () => {
 	const gameIdParam = params.gameId; // идентификатор игры
 
 	const login = useSelector(selectLogin);
+	const userId = useSelector(selectUserId);
 	const gameId = useSelector(selectGameId);
 	const gameData = useSelector(selectGameData);
 	const isGameDataLoading = useSelector(selectIsGameDataLoading);
@@ -50,6 +56,7 @@ const GamePageContainer = () => {
 	const gameFieldError = useSelector(selectGameFieldError);
 	const selectedCheckerPosition = useSelector(selectSelectedCheckerPosition);
 	const availableFields = useSelector(selectAvailableFields);
+	const isCapitulating = useSelector(selectIsCapitulating);
 
 	const dispatch = useDispatch();
 
@@ -57,7 +64,11 @@ const GamePageContainer = () => {
 		// если идентификатор игры из пути не совпадает с тем что в редаксе, то надо его сохранить и получить данные об игровом поле, т.к. это означает, что пользователь только зашёл на страничку
 		if (gameIdParam !== gameId) {
 			dispatch(setGameId(gameIdParam));
-			dispatch(tryGetGameDataAsync({gameId: gameIdParam, userLogin: login}));
+			dispatch(tryGetGameDataAsync({gameId: gameIdParam, userId}));
+		}
+		// если игровые данные отсутствуют, то надо их подгрузить
+		if (!gameData && !isGameDataLoading) {
+			dispatch(tryGetGameDataAsync({gameId: gameIdParam, userId}));
 		}
 		// если игровые данные загружены, а данных по полю нет, то их надо подгрузить
 		if (!gameField && !isGameFieldLoading && !isGameDataLoading) {
@@ -74,8 +85,12 @@ const GamePageContainer = () => {
 		return <LoaderFullSpace/>
 	}
 
-	if (gameData.status === GAME_STATUS_FINISHED) { // если игра завершена, то отрендерить победную страничку
-		return <PlayedGamePage winnerLogin={"login"} loserLogin={"user"}/>;
+	// если игра завершена, то отрендерить победную страничку
+	if (gameData.status === GAME_STATUS_FINISHED || gameData.status === GAME_STATUS_OPPONENT_WIN || gameData.status === GAME_STATUS_YOU_WIN) {
+		return <PlayedGamePage
+			winnerLogin={gameData.status === GAME_STATUS_YOU_WIN ? login + " (Вы)" : gameData.opponentLogin}
+			loserLogin={gameData.status === GAME_STATUS_YOU_WIN ? gameData.opponentLogin : login + " (Вы)"}
+		/>;
 	}
 
 	// обработчик нажатий на выбор шашки
@@ -86,7 +101,14 @@ const GamePageContainer = () => {
 
 	// функция для совершения хода шашкой
 	const createCheckerStep = (position) => {
+		dispatch(setGamesList(null)); // обнуление списка игр в профиле
 		dispatch(tryCreateCheckerStepAsync({gameId, from: selectedCheckerPosition, to: position}));
+	};
+
+	// обработчик нажатия на кнопку "Сдаться"
+	const onCapitulation = () => {
+		dispatch(setGamesList(null)); // обнуление списка игр в профиле
+		dispatch(tryCapitulateAsync(gameId));
 	};
 
 	const checkersFieldProps = {
@@ -107,6 +129,8 @@ const GamePageContainer = () => {
 		gameData,
 		isGameDataLoading,
 		gameDataError,
+		onCapitulation,
+		isCapitulating
 	};
 
 	return (

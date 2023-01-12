@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-	openedMenuBlocks: [] // список раскрытых блоков меню
+	openedMenuBlocks: ["games"] // список раскрытых блоков меню
 };
 
 export const menuSlice = createSlice({

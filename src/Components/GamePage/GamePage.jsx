@@ -9,7 +9,7 @@ import styles from "./GamePage.module.css"
 import LoaderFullSpace from "../Common/LoaderFullSpace/LoaderFullSpace";
 import {CHECKER_COLOR_WHITE, GAME_STATUS_OPPONENT_TURN, GAME_STATUS_YOUR_TURN} from "../../Strings";
 
-const GamePage = ({gameId, login, gameData, isGameDataLoading, gameDataError, checkersFieldProps}) => {
+const GamePage = ({gameId, login, gameData, isGameDataLoading, gameDataError, onCapitulation, isCapitulating, checkersFieldProps}) => {
 
 	const body = <>
 		<Title level={2}>
@@ -40,7 +40,7 @@ const GamePage = ({gameId, login, gameData, isGameDataLoading, gameDataError, ch
 			<div className={styles.gameBlockFooterWrapper}>
 				<div className={styles.gameBlockFooter}>
 					<p>gameId: {gameId}</p>
-					<Button danger>Сдаться</Button>
+					<Button danger loading={isCapitulating} onClick={() => onCapitulation()}>Сдаться</Button>
 				</div>
 			</div>
 		</div>

@@ -6,6 +6,11 @@ export const fetchGetGamesList = () => {
 	return axios.get(`game/checker`, getAxiosConfigWithToken());
 };
 
+// получение данных об игре
+export const fetchGameData = (gameID) => {
+	return axios.get(`game/checker?gameID=${gameID}`, getAxiosConfigWithToken());
+};
+
 // отправка запроса на создание игры
 export const fetchCreateGame = () => {
 	return axios.post(`game/checker`, {}, getAxiosConfigWithToken());
@@ -27,10 +32,15 @@ export const fetchCheckersField = (gameId) => {
 
 // получение доступных ходов для шашки
 export const fetchAvailableFields = (gameId, position) => {
-	return axios.get(`/game/checker/${gameId}/step?position=${position}`, getAxiosConfigWithToken());
+	return axios.get(`game/checker/${gameId}/step?position=${position}`, getAxiosConfigWithToken());
 };
 
 // отправка хода шашки
 export const fetchCreateCheckerStep = (gameId, from, to) => {
-	return axios.post(`/game/checker/${gameId}/step`, {from, to}, getAxiosConfigWithToken());
+	return axios.post(`game/checker/${gameId}/step`, {from, to}, getAxiosConfigWithToken());
+};
+
+// отправка капитуляции
+export const fetchCapitulate = (gameId) => {
+	return axios.post(`game/checker/${gameId}/capitulate`, {}, getAxiosConfigWithToken());
 };

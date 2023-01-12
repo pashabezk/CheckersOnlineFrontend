@@ -43,7 +43,7 @@ const ProfilePageContainer = () => {
 	});
 
 	if (games) {
-		games = games.map(game => reinterpretGameData(game, login));
+		games = games.map(game => reinterpretGameData(game, userId));
 	}
 
 	// нажатие по кнопке "Создать" для создания новой игры
