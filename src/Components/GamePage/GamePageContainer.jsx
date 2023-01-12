@@ -29,6 +29,7 @@ import {selectLogin, selectUserId} from "../../Redux/AuthReducer";
 import LoaderFullSpace from "../Common/LoaderFullSpace/LoaderFullSpace";
 import {setGamesList} from "../../Redux/ProfileReducer";
 import useWebSocket from "react-use-websocket";
+import {SERVER_WEB_SOCKET_BASE_URL} from "../../API/Config";
 
 export const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -68,13 +69,20 @@ const GamePageContainer = () => {
 		}
 	});
 
-	const WS_PATH = `wss://home.ferrion.tech/game/checker/${gameId}/user/${userId}`;
-	const {lastJsonMessage} = useWebSocket(WS_PATH, {});
-
 	useEffect(() => {
-		if (lastJsonMessage) {
-			if (!isGameFieldLoading && !isGameDataLoading)
-				dispatch(tryGetCheckersFieldAsync({gameId: gameIdParam, userId}));
+		return () => { // обработчик unmount компоненты
+			dispatch(setGameId(null));
+		}
+	}, []);
+
+	// создание подключения по WebSocket для получения данных о ходе соперника
+	const WS_PATH = SERVER_WEB_SOCKET_BASE_URL + `${userId}`;
+	const {lastJsonMessage} = useWebSocket(WS_PATH, {});
+	useEffect(() => {
+		if (lastJsonMessage) { // если сообщение есть, то запросить новые данные о расположении шашек
+			if (Number(lastJsonMessage.gameID) === Number(gameId))
+				if (!isGameFieldLoading && !isGameDataLoading)
+					dispatch(tryGetCheckersFieldAsync({gameId: gameIdParam, userId}));
 		}
 	}, [lastJsonMessage]);
 

@@ -58,6 +58,11 @@ export const profileSlice = createSlice({
 	name: "profile",
 	initialState,
 	reducers: {
+		setInitialState: (state, action) => {
+			for (let key in initialState ) {
+				state[key] = initialState[key];
+			}
+		},
 		setGamesList: (state, action) => {
 			state.games = action.payload;
 		},
@@ -135,7 +140,7 @@ export const profileSlice = createSlice({
 });
 
 // actions
-export const {setIsCreateGameModalOpen, setIsConnectGameModalOpen, setGamesList} = profileSlice.actions;
+export const {setInitialState, setIsCreateGameModalOpen, setIsConnectGameModalOpen, setGamesList} = profileSlice.actions;
 
 // selectors
 export const selectGames = (state) => state.profile.games;

@@ -92,16 +92,7 @@ export const gameSlice = createSlice({
 		// установка позиции выбранной шашки
 		setSelectedCheckerPosition: (state, action) => {
 			state.selectedCheckerPosition = action.payload;
-		},
-		// setCheckersField: (state, action)=>{
-		// 	state.selectedCheckerPosition = action.payload;
-		// }
-
-		// TODO то что ниже - переписать или удалить (если сервер подключит доступные ходы, то редьюсер ниже не нужен)
-		// установка полей, доступных для хода
-		// setAvailableFields: (state, action) => {
-		// 	state.availableFields = action.payload;
-		// }
+		}
 	},
 	extraReducers: (builder) => {
 		builder

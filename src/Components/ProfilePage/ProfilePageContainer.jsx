@@ -36,6 +36,12 @@ const ProfilePageContainer = () => {
 	const connectGameError = useSelector(selectConnectGameError);
 	const dispatch = useDispatch();
 
+	useEffect(()=> { // обработчик на componentWillMount
+		if (!isGamesListLoading) { // когда пользователь заходит в профиль, всегда надо подгружать свежие игры
+			dispatch(tryGetGamesListAsync());
+		}
+	}, []);
+
 	useEffect(() => {
 		if (games === null && !isGamesListLoading) {
 			dispatch(tryGetGamesListAsync());

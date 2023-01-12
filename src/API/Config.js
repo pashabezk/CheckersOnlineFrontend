@@ -2,6 +2,7 @@ import axios from "axios";
 import {getTokenFromCookie} from "../Cookie/AuthWithCookie";
 
 const SERVER_BASE_URL = "https://home.ferrion.tech/"; // базовый url сервера
+export const SERVER_WEB_SOCKET_BASE_URL = "wss://home.ferrion.tech/game/socket/"; // базовый url сервера для сокета
 
 // для использования запросов без токена
 export const axiosInstance = axios.create({

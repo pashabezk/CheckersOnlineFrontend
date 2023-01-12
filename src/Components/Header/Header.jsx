@@ -6,6 +6,7 @@ import {LogoutOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {selectIsAuthing, selectUserId, setLogoutData} from "../../Redux/AuthReducer";
 import {useNavigate} from "react-router-dom";
+import {setInitialState} from "../../Redux/ProfileReducer";
 
 const AppHeader = () => {
 	const userId = useSelector(selectUserId);
@@ -15,6 +16,7 @@ const AppHeader = () => {
 
 	const onLogoutButtonClick = () => {
 		dispatch(setLogoutData());
+		dispatch(setInitialState());
 	};
 
 	return (
