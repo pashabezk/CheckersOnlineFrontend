@@ -27,7 +27,7 @@ export const fetchConnectToGame = (gameId, userId) => {
 
 // получение данных о расположении шашек на поле
 export const fetchCheckersField = (gameId) => {
-	return axios.get(`game/checker/${gameId}`, getAxiosConfigWithToken());
+	return axios.get(`game/checker/${gameId}/fullInfo`, getAxiosConfigWithToken());
 };
 
 // получение доступных ходов для шашки

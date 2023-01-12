@@ -36,11 +36,12 @@ export const tryGetGameDataAsync = createAsyncThunk(
 // получение данных о расположении шашек на поле
 export const tryGetCheckersFieldAsync = createAsyncThunk(
 	'game/tryGetCheckersField',
-	async (gameId) => {
+	async ({gameId, userId}) => {
 		const response = await fetchCheckersField(gameId).catch(reason => reason.response);
 		return {
 			data: response.data,
-			status: response.status
+			status: response.status,
+			userId
 		};
 	}
 );
@@ -92,6 +93,9 @@ export const gameSlice = createSlice({
 		setSelectedCheckerPosition: (state, action) => {
 			state.selectedCheckerPosition = action.payload;
 		},
+		// setCheckersField: (state, action)=>{
+		// 	state.selectedCheckerPosition = action.payload;
+		// }
 
 		// TODO то что ниже - переписать или удалить (если сервер подключит доступные ходы, то редьюсер ниже не нужен)
 		// установка полей, доступных для хода
@@ -139,7 +143,9 @@ export const gameSlice = createSlice({
 				state.isGameFieldLoading = false;
 				switch (action.payload.status) {
 					case 200: // удалось загрузить поле с игрой
-						state.gameField = action.payload.data;
+						state.gameField = action.payload.data.checkers;
+						const gameData = action.payload.data.gameInfo;
+						state.gameData = reinterpretGameData(gameData, action.payload.userId);
 						break;
 					default:
 						state.gameFieldError = "Не удалось загрузить данные";
@@ -178,7 +184,6 @@ export const gameSlice = createSlice({
 			})
 			.addCase(tryCreateCheckerStepAsync.fulfilled, (state, action) => {
 				state.isGameFieldLoading = false;
-				console.log(action.payload)
 				switch (action.payload.status) {
 					case 204: // удалось сделать ход
 						state.gameData = null; // если ход был удачным, необходимо обновить информацию об игре, чтобы подгрузился статус игры

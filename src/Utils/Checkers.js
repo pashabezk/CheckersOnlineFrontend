@@ -33,7 +33,7 @@ export const reinterpretGameData = (game, playerId) => {
 			newGame.opponentLogin = game.firstUserLogin;
 			newGame.opponentId = game.firstUserId;
 		}
-		if (game.winSide === Number(playerId)) {
+		if (game.winnerId === Number(playerId)) {
 			newGame.status = GAME_STATUS_YOU_WIN;
 		}
 		else

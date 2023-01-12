@@ -28,6 +28,7 @@ import PlayedGamePage from "./PlayedGamePage";
 import {selectLogin, selectUserId} from "../../Redux/AuthReducer";
 import LoaderFullSpace from "../Common/LoaderFullSpace/LoaderFullSpace";
 import {setGamesList} from "../../Redux/ProfileReducer";
+import useWebSocket from "react-use-websocket";
 
 export const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -63,9 +64,19 @@ const GamePageContainer = () => {
 		}
 		// если игровые данные загружены, а данных по полю нет, то их надо подгрузить
 		if (!gameField && !isGameFieldLoading && !isGameDataLoading) {
-			dispatch(tryGetCheckersFieldAsync(gameIdParam));
+			dispatch(tryGetCheckersFieldAsync({gameId: gameIdParam, userId}));
 		}
 	});
+
+	const WS_PATH = `ws://home.ferrion.tech/game/checker/${gameId}/user/${userId}`;
+	const {lastJsonMessage} = useWebSocket(WS_PATH, {});
+
+	useEffect(() => {
+		if (lastJsonMessage) {
+			if (!isGameFieldLoading && !isGameDataLoading)
+				dispatch(tryGetCheckersFieldAsync({gameId: gameIdParam, userId}));
+		}
+	}, [lastJsonMessage]);
 
 	if (!Number(gameIdParam) || Number(gameIdParam) < 0) { // если не удается превратить строку в число, то значит переданный параметр (gameId) задан неправильно
 		return <PageNotFound title="Невалидный url игры" message="Введите корректный url или выберите игру из списка в профиле"/>
