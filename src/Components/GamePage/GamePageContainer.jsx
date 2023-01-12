@@ -68,7 +68,7 @@ const GamePageContainer = () => {
 		}
 	});
 
-	const WS_PATH = `ws://home.ferrion.tech/game/checker/${gameId}/user/${userId}`;
+	const WS_PATH = `wss://home.ferrion.tech/game/checker/${gameId}/user/${userId}`;
 	const {lastJsonMessage} = useWebSocket(WS_PATH, {});
 
 	useEffect(() => {
