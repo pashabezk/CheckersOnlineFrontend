@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/CheckersOnlineFrontend/static/css/main.e7234417.css",
-    "main.js": "/CheckersOnlineFrontend/static/js/main.c3363149.js",
+    "main.js": "/CheckersOnlineFrontend/static/js/main.a5dc4069.js",
     "static/css/642.f2e1be32.chunk.css": "/CheckersOnlineFrontend/static/css/642.f2e1be32.chunk.css",
     "static/js/642.ffcbf299.chunk.js": "/CheckersOnlineFrontend/static/js/642.ffcbf299.chunk.js",
     "static/css/376.4950cd0e.chunk.css": "/CheckersOnlineFrontend/static/css/376.4950cd0e.chunk.css",
@@ -25,7 +25,7 @@
     "static/media/Black.svg": "/CheckersOnlineFrontend/static/media/Black.89cd2513aff4bafc1851b83f8b43dc26.svg",
     "index.html": "/CheckersOnlineFrontend/index.html",
     "main.e7234417.css.map": "/CheckersOnlineFrontend/static/css/main.e7234417.css.map",
-    "main.c3363149.js.map": "/CheckersOnlineFrontend/static/js/main.c3363149.js.map",
+    "main.a5dc4069.js.map": "/CheckersOnlineFrontend/static/js/main.a5dc4069.js.map",
     "642.f2e1be32.chunk.css.map": "/CheckersOnlineFrontend/static/css/642.f2e1be32.chunk.css.map",
     "642.ffcbf299.chunk.js.map": "/CheckersOnlineFrontend/static/js/642.ffcbf299.chunk.js.map",
     "376.4950cd0e.chunk.css.map": "/CheckersOnlineFrontend/static/css/376.4950cd0e.chunk.css.map",
@@ -46,6 +46,6 @@
   },
   "entrypoints": [
     "static/css/main.e7234417.css",
-    "static/js/main.c3363149.js"
+    "static/js/main.a5dc4069.js"
   ]
 }
