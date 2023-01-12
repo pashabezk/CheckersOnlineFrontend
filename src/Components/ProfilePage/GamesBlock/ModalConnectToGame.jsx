@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import {Button, Form, InputNumber, Modal, Typography} from "antd";
-import {useNavigate} from "react-router-dom";
 
 const {Text} = Typography;
 
@@ -8,7 +7,6 @@ const {Text} = Typography;
 const ModalConnectToGame = ({messageApi, isConnectGameModalOpen, isConnectGameLoading, connectedGameId, connectGameError, setConnectToGameModalOpened, onConnectToGameModalFormSubmit}) => {
 
 	const [formConnectToGame] = Form.useForm(); // для работы с формой в модульном окне подключения к игре
-	const navigate = useNavigate(); // хук для перехода на другие страницы
 
 	useEffect(() => {
 		if (connectedGameId) { // если появился идентификатор подключения к игре, значит удалось подсоединиться к игре, значит нужно перейти к игре

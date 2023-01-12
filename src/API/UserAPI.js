@@ -1,11 +1,6 @@
 import axios from "axios";
 import {axiosInstance, getAxiosConfigWithToken} from "./Config";
 
-// TODO delete
-export const fetchHelloTest = () => {
-	return axiosInstance.get(`test/hello`);
-};
-
 // регистрация
 export const fetchRegistration = (login, password) => {
 	return axiosInstance.post(`api/user`, {username: login, password});

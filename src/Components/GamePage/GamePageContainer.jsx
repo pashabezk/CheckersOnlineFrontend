@@ -31,15 +31,6 @@ import {setGamesList} from "../../Redux/ProfileReducer";
 
 export const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-// получение объекта шашки на позиции
-export const findChecker = (gameField, position) => {
-	return gameField.find(elem => {
-		if (elem.position === position) {
-			return elem;
-		} else return false;
-	});
-}
-
 const GamePageContainer = () => {
 
 	const params = useParams(); // использование параметров строки запроса

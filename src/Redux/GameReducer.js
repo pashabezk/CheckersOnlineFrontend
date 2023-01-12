@@ -178,6 +178,7 @@ export const gameSlice = createSlice({
 			})
 			.addCase(tryCreateCheckerStepAsync.fulfilled, (state, action) => {
 				state.isGameFieldLoading = false;
+				console.log(action.payload)
 				switch (action.payload.status) {
 					case 204: // удалось сделать ход
 						state.gameData = null; // если ход был удачным, необходимо обновить информацию об игре, чтобы подгрузился статус игры
