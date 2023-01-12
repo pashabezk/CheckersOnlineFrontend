@@ -21,7 +21,7 @@ const withAuthRedirect = (Component) => {
 			}
 		});
 		// при этом отображается загрузка
-		if (token && !userId) {
+		if (token && !login) {
 			return <LoaderFullSpace/>
 		}
 

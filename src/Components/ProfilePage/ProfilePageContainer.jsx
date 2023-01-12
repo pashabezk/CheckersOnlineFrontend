@@ -19,7 +19,7 @@ import {
 	tryGetGamesListAsync
 } from "../../Redux/ProfileReducer";
 import {selectLogin, selectUserId} from "../../Redux/AuthReducer";
-import {GAME_STATUS_IN_PROCESS, GAME_STATUS_OPPONENT_TURN, GAME_STATUS_YOUR_TURN} from "../../Strings";
+import {reinterpretGameData} from "../../Utils/Checkers";
 
 const ProfilePageContainer = () => {
 
@@ -43,29 +43,7 @@ const ProfilePageContainer = () => {
 	});
 
 	if (games) {
-		games = games.map(game => {
-			let newGame = {...game};
-			if (game.status === GAME_STATUS_IN_PROCESS) {
-				if (game.firstUserLogin === login) {
-					newGame.opponentLogin = game.secondUserLogin;
-					newGame.opponentId = game.secondUserId;
-					if (game.firstUserColor === game.turnOf) {
-						newGame.status = GAME_STATUS_YOUR_TURN;
-					} else {
-						newGame.status = GAME_STATUS_OPPONENT_TURN;
-					}
-				} else {
-					newGame.opponentLogin = game.firstUserLogin;
-					newGame.opponentId = game.firstUserId;
-					if (game.secondUserColor === game.turnOf) {
-						newGame.status = GAME_STATUS_YOUR_TURN;
-					} else {
-						newGame.status = GAME_STATUS_OPPONENT_TURN;
-					}
-				}
-			}
-			return newGame;
-		});
+		games = games.map(game => reinterpretGameData(game, login));
 	}
 
 	// нажатие по кнопке "Создать" для создания новой игры
@@ -82,7 +60,7 @@ const ProfilePageContainer = () => {
 	// установка значения открытия модульного окна "Присоединиться к игре"
 	const setConnectToGameModalOpened = (open) => {
 		dispatch(setIsConnectGameModalOpen(open));
-		if(!open) { // если окно закрыто, значит надо обновить список игр
+		if (!open) { // если окно закрыто, значит надо обновить список игр
 			dispatch(tryGetGamesListAsync());
 		}
 	};

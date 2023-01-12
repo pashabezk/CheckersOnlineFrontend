@@ -1,5 +1,12 @@
-.mainFooter {
+.mainFooterCentered {
 	display: flex;
 	width: 100%;
+	justify-content: center;
+}
+
+.mainFooter {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	justify-content: center;
 }

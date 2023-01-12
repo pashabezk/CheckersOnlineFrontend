@@ -4,41 +4,49 @@ import blackQueen from "../../../Assets/Img/Chekers/BlackQueen.svg";
 import whiteQueen from "../../../Assets/Img/Chekers/WhiteQueen.svg";
 import blackChecker from "../../../Assets/Img/Chekers/Black.svg";
 import whiteChecker from "../../../Assets/Img/Chekers/White.svg";
-import {CHECKER_COLOR_BLACK, CHECKER_TYPE_CHECKER} from "../../../Strings";
+import {CHECKER_COLOR_BLACK, CHECKER_COLOR_SHORTLY_BLACK, CHECKER_TYPE_SHORTLY_CHECKER, convertFullParamsToShortly, GAME_STATUS_YOUR_TURN} from "../../../Strings";
 import {letters} from "../GamePageContainer";
+import LoaderFullSpace from "../../Common/LoaderFullSpace/LoaderFullSpace";
+import Title from "antd/lib/typography/Title";
 
-const Checker = ({type, color, selected, onSelectChecker, position, playerColor}) => {
+const Checker = ({type, color, selected, onSelectChecker, position, playerColor, gameStatus}) => {
 	const checkerOnClick = () => {
 		onSelectChecker(position);
 	};
 
 	return (
 		<img
-			className={styles.checker + (selected ? (" " + styles.checkerSelected) : (playerColor === color ? (" " + styles.checkerPlayer) : ""))}
+			className={styles.checker + (selected ? (" " + styles.checkerSelected) : (convertFullParamsToShortly(playerColor) === color ? (" " + styles.checkerPlayer) : ""))}
 			src={
-				color === CHECKER_COLOR_BLACK
-					? (type === CHECKER_TYPE_CHECKER ? blackChecker : blackQueen)
-					: (type === CHECKER_TYPE_CHECKER ? whiteChecker : whiteQueen)
+				color === CHECKER_COLOR_SHORTLY_BLACK
+					? (type === CHECKER_TYPE_SHORTLY_CHECKER ? blackChecker : blackQueen)
+					: (type === CHECKER_TYPE_SHORTLY_CHECKER ? whiteChecker : whiteQueen)
 			}
 			alt="checker"
-			onClick={playerColor === color ? checkerOnClick : undefined}
+			// нажатие по шашке должно происходить только в случае если это собственная шашка и если сейчас ходит игрок
+			onClick={(convertFullParamsToShortly(playerColor) === color && gameStatus === GAME_STATUS_YOUR_TURN) ? checkerOnClick : undefined}
 		/>
 	);
 }
 
-const Cell = ({isBlack, checker, selected, onSelectChecker, position, playerColor, isAvailable}) => {
+const Cell = ({isBlack, checker, selected, onSelectChecker, position, playerColor, isAvailable, gameStatus, createCheckerStep}) => {
 	return (
-		<div className={(isBlack ? styles.blackCell : styles.whiteCell) + (isAvailable ? (" " + styles.availableCell) : "")}>
+		<div
+			className={(isBlack ? styles.blackCell : styles.whiteCell) + (isAvailable ? (" " + styles.availableCell) : "")}
+			onClick={isAvailable ? () => {
+				createCheckerStep(position)
+			} : undefined} // если клетка доступна для хода, то надо навесить на неё обработчик нажатий
+		>
 			{
 				checker
-					? <Checker type={checker.type} color={checker.color} selected={selected} onSelectChecker={onSelectChecker} position={position} playerColor={playerColor}/>
+					? <Checker type={checker.type} color={checker.color} selected={selected} onSelectChecker={onSelectChecker} position={position} playerColor={playerColor} gameStatus={gameStatus}/>
 					: <div></div>
 			}
 		</div>
 	);
 }
 
-const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, playerColor, availableFields}) => {
+const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, playerColor, availableFields, gameStatus, createCheckerStep}) => {
 	let isBlack = rowNumber % 2 !== 1; // вычисление цвета первой клетки ряда
 	const cells = letters.map(letter => {
 		isBlack = !isBlack;
@@ -66,6 +74,8 @@ const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, pl
 			position={position}
 			playerColor={playerColor}
 			isAvailable={isAvailable}
+			gameStatus={gameStatus}
+			createCheckerStep={createCheckerStep}
 		/>
 	});
 
@@ -76,23 +86,38 @@ const Row = ({rowNumber, gameField, selectedCheckerPosition, onSelectChecker, pl
 	);
 }
 
-const CheckersField = ({gameField, playerColor, selectedCheckerPosition, onSelectChecker, availableFields}) => {
+const CheckersField = ({gameStatus, gameField, isGameFieldLoading, gameFieldError, playerColor, selectedCheckerPosition, onSelectChecker, availableFields, createCheckerStep}) => {
+
+	if (isGameFieldLoading)
+		return <LoaderFullSpace message="Загрузка шашек"/>
+
+	if (gameFieldError) {
+		return <div>
+			<Title>Возникла ошибка</Title>
+			<p>{gameFieldError}</p>
+		</div>
+	}
 
 	let numbers = [8, 7, 6, 5, 4, 3, 2, 1]; // ряд чисел для составления доски
 
 	if (playerColor === CHECKER_COLOR_BLACK) // если игрок играет за черные шашки, то поле надо перевернуть
 		numbers = numbers.reverse()
 
-	const rows = numbers.map(number => // формирование строк в которые будут помещены клетки с игрой
-		<Row key={number}
-			 rowNumber={number}
-			 gameField={gameField}
-			 selectedCheckerPosition={selectedCheckerPosition}
-			 onSelectChecker={onSelectChecker}
-			 playerColor={playerColor}
-			 availableFields={availableFields}
-		/>
-	);
+	let rows = [];
+	if (Array.isArray(gameField)) {
+		rows = numbers.map(number => // формирование строк в которые будут помещены клетки с игрой
+			<Row key={number}
+				 rowNumber={number}
+				 gameField={gameField}
+				 selectedCheckerPosition={selectedCheckerPosition}
+				 onSelectChecker={onSelectChecker}
+				 playerColor={playerColor}
+				 availableFields={availableFields}
+				 gameStatus={gameStatus}
+				 createCheckerStep={createCheckerStep}
+			/>
+		);
+	}
 
 	const numbersSide = numbers.map(number => { // формирование блоков для нумерации доски
 		return <div key={number + " " + number}>{number}</div>
